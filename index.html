@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Prototyping Workshop</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent:  #e94560;
+      --bg:      #f5f5f5;
+      --text:    #333333;
+      --muted:   #666666;
+      --border:  #dddddd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 2rem;
+    }
+
+    header h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    header p  { color: #aaa; }
+
+    nav {
+      background: #e0e0e0;
+      padding: 0.75rem 2rem;
+    }
+
+    nav a {
+      margin-right: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child { border-bottom: none; }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    p { margin-bottom: 0.75rem; }
+
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.5rem; }
+
+    footer {
+      background: var(--primary);
+      color: #aaa;
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <h1>AI Prototyping Workshop</h1>
+    <p>Building real things with Claude — live, right now.</p>
+  </header>
+
+  <nav id="nav">
+    <a href="#about">About</a>
+    <a href="#agenda">Agenda</a>
+    <a href="#teams">Teams</a>
+    <a href="#feedback">Feedback</a>
+  </nav>
+
+  <main>
+
+    <section id="about">
+      <h2>About This Session</h2>
+      <p>
+        This is a hands-on AI prototyping workshop exploring what teams can build
+        using Claude as a coding collaborator. In 50 minutes, three teams will each
+        add a real feature to this very page — live, in front of you.
+      </p>
+      <p>
+        The goal is not a polished product. The goal is understanding how the quality
+        of your prompt shapes the quality of your output.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         TEAM 2 SCOPE — Interactive Agenda
+         Modify ONLY the content inside this section.
+         You may append new styles to the <style> block above.
+         Do not touch anything outside this section.
+    ============================================================ -->
+    <section id="agenda">
+      <h2>Session Agenda</h2>
+      <ul>
+        <li><strong>00:00</strong> — Welcome &amp; base page walkthrough</li>
+        <li><strong>00:08</strong> — Teams assigned, Claude Code sessions live</li>
+        <li><strong>00:10</strong> — Build phase begins</li>
+        <li><strong>00:35</strong> — Each team presents their feature</li>
+        <li><strong>00:45</strong> — Live merge on main screen</li>
+        <li><strong>00:50</strong> — Retrospective &amp; close</li>
+      </ul>
+    </section>
+
+    <section id="teams">
+      <h2>Teams</h2>
+      <p><strong>Team 1</strong> — UI Uplift</p>
+      <p><strong>Team 2</strong> — Interactive Agenda</p>
+      <p><strong>Team 3</strong> — Session Feedback</p>
+    </section>
+
+    <!-- ============================================================
+         TEAM 3 SCOPE — Session Feedback Widget
+         Modify ONLY the content inside this section.
+         You may append new styles to the <style> block above.
+         Add your <script> block at the end of <body> — see comment below.
+    ============================================================ -->
+    <section id="feedback">
+      <h2>Session Feedback</h2>
+      <p>Team 3 is building this feature right now. Check back shortly.</p>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <p>Built live with Claude &middot; AI Prototyping Workshop</p>
+  </footer>
+
+  <!-- ============================================================
+       TEAM 3: Replace this comment with your <script> block.
+       All JavaScript for the feedback widget goes here.
+  ============================================================ -->
+
+</body>
+</html>
