@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Prototyping Workshop · DSI May Away Day 2026</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#08080e;
+  --accent:#7B2D8B;
+  --hi:#b04ec8;
+  --ar:123,45,139;
+  --text:#e4e4f0;
+  --dim:rgba(228,228,240,.55);
+  --muted:#585878;
+  --rule:rgba(123,45,139,.18);
+  --card-b:rgba(123,45,139,.24);
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
+.deck{position:fixed;inset:0}
+
+/* ── Slide shell ─────────────────────────────────────────────────────────── */
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;background:var(--bg);
+  transform:translateY(22px);
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1)
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0)}
+
+/* ── Chrome ──────────────────────────────────────────────────────────────── */
+.chrome{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 56px;flex-shrink:0;position:relative
+}
+.chrome::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--rule) 12%,var(--rule) 88%,transparent)
+}
+.cl,.cr{font:9px/1 'Courier New',monospace;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.cc{flex:1;text-align:center;font:9px/1 'Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(88,88,120,.4);margin:0 20px}
+
+/* ── Slide header ────────────────────────────────────────────────────────── */
+.shd{padding:14px 56px 12px;flex-shrink:0;position:relative}
+.shd::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--rule) 8%,var(--rule) 92%,transparent)
+}
+.slabel{display:block;font:11px/1 'Courier New',monospace;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.stitle{font:400 clamp(23px,2.7vw,33px)/1.18 Georgia,serif;color:var(--text)}
+.stitle em{font-style:italic;color:var(--accent)}
+
+/* ── Body/takeaway/footer ────────────────────────────────────────────────── */
+.sbody{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+.tkwy{
+  padding:11px 56px;flex-shrink:0;position:relative;
+  background:linear-gradient(90deg,rgba(var(--ar),.07) 0%,transparent 70%)
+}
+.tkwy::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--rule) 8%,var(--rule) 92%,transparent)
+}
+.tkwy p{font:italic clamp(15px,1.55vw,18px)/1.55 Georgia,serif;color:var(--dim)}
+.tkwy em{color:var(--accent);font-style:normal}
+.sftr{display:flex;justify-content:flex-end;padding:8px 56px;flex-shrink:0;border-top:1px solid rgba(var(--ar),.07)}
+.cnt{font:13px/1 'Courier New',monospace;letter-spacing:.22em;color:var(--accent)}
+
+/* ── Progress ────────────────────────────────────────────────────────────── */
+.pbar{
+  position:fixed;bottom:0;left:0;height:2px;z-index:200;
+  background:linear-gradient(90deg,var(--accent),var(--hi));
+  box-shadow:0 0 12px rgba(var(--ar),.5);
+  transition:width .42s ease
+}
+.khint{
+  position:fixed;bottom:9px;left:56px;z-index:200;pointer-events:none;
+  font:8px/1 'Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(88,88,120,.36)
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SLIDE 1 · COVER
+══════════════════════════════════════════════════════════════════════════ */
+.cover-body{flex:1;display:flex;align-items:center;padding:0 56px;position:relative;overflow:hidden}
+
+.cover-glow{
+  position:absolute;right:-8%;top:50%;transform:translateY(-50%);
+  width:56vw;height:56vw;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(var(--ar),.13) 0%,transparent 65%)
+}
+.cover-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(var(--ar),.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--ar),.06) 1px,transparent 1px);
+  background-size:54px 54px;
+  -webkit-mask-image:radial-gradient(ellipse 72% 80% at 68% 50%,black 5%,transparent 68%);
+  mask-image:radial-gradient(ellipse 72% 80% at 68% 50%,black 5%,transparent 68%)
+}
+.cover-content{position:relative;z-index:1;max-width:800px}
+.c-eye{
+  display:block;font:11px/1 'Courier New',monospace;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:24px
+}
+.c-h1{
+  font:400 clamp(48px,7.2vw,88px)/1.02 Georgia,serif;
+  color:var(--text);margin-bottom:14px;letter-spacing:-.01em
+}
+.c-h1 em{
+  font-style:italic;
+  background:linear-gradient(128deg,var(--hi) 0%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.c-sub{
+  font:italic clamp(16px,1.9vw,21px)/1.55 Georgia,serif;
+  color:var(--dim);margin-bottom:40px
+}
+.c-rule{
+  width:40px;height:2px;margin-bottom:32px;
+  background:linear-gradient(90deg,var(--accent),var(--hi));
+  box-shadow:0 0 12px rgba(var(--ar),.5)
+}
+.c-brand-name{
+  font:700 clamp(16px,1.9vw,22px)/1 Georgia,serif;
+  color:var(--accent);letter-spacing:.08em;margin-bottom:5px
+}
+.c-brand-sub{
+  font:11px/1 'Courier New',monospace;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--muted)
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SLIDE 2 · LLM vs AGENT
+══════════════════════════════════════════════════════════════════════════ */
+.cmp-layout{
+  flex:1;display:grid;grid-template-columns:1fr 1px 1fr;
+  padding:0 56px;overflow:hidden;min-height:0
+}
+.cmp-div{
+  background:linear-gradient(180deg,transparent,var(--rule) 12%,var(--rule) 88%,transparent);
+  margin:14px 0
+}
+.cmp-col{padding:14px 36px 14px 0;overflow:hidden;display:flex;flex-direction:column}
+.cmp-col.r{
+  padding:14px 0 14px 36px;
+  background:linear-gradient(100deg,rgba(var(--ar),.05) 0%,transparent 75%)
+}
+.cmp-hd{
+  font:11px/1 'Courier New',monospace;letter-spacing:.22em;text-transform:uppercase;
+  padding-bottom:11px;border-bottom:1px solid var(--rule);margin-bottom:13px
+}
+.cmp-hd.dim{color:var(--muted)}
+.cmp-hd.hi{color:var(--accent)}
+.cmp-item{
+  font:clamp(15px,1.55vw,17.5px)/1.62 system-ui,-apple-system,sans-serif;
+  color:var(--dim);margin-bottom:9px;padding-left:20px;position:relative
+}
+.cmp-item::before{
+  content:'—';position:absolute;left:0;color:rgba(88,88,120,.45);
+  font-size:.82em;top:.28em
+}
+.cmp-col.r .cmp-item{color:var(--text)}
+.cmp-col.r .cmp-item::before{content:'→';color:var(--accent);font-size:1em;top:.08em}
+.cmp-note{
+  margin-top:auto;padding-top:10px;border-top:1px solid var(--rule);
+  font:italic clamp(14px,1.38vw,16px)/1.5 Georgia,serif;
+  color:rgba(88,88,120,.62)
+}
+.cmp-col.r .cmp-note{color:rgba(176,78,200,.62)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SLIDE 3 · THREE WAYS
+══════════════════════════════════════════════════════════════════════════ */
+.three-layout{flex:1;display:flex;padding:0 56px;overflow:hidden;min-height:0}
+.tcol{
+  flex:1;padding:15px 28px 15px 0;
+  border-right:1px solid var(--rule);overflow:hidden;display:flex;flex-direction:column
+}
+.tcol:last-child{border-right:none;padding-right:0}
+.tcol:not(:first-child){padding-left:28px}
+.col-badge{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.col-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 8px rgba(var(--ar),.6)
+}
+.col-tag{
+  font:11px/1 'Courier New',monospace;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--accent)
+}
+.col-title{
+  font:400 clamp(18px,2.2vw,27px)/1.16 Georgia,serif;
+  color:var(--text);margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid var(--rule)
+}
+.col-item{
+  font:clamp(15px,1.5vw,17px)/1.57 system-ui,-apple-system,sans-serif;
+  color:var(--dim);margin-bottom:7px;padding-left:14px;position:relative
+}
+.col-item::before{content:'·';position:absolute;left:0;color:var(--muted)}
+.col-note{
+  margin-top:auto;padding-top:9px;border-top:1px solid var(--rule);
+  font:italic clamp(14px,1.35vw,16px)/1.5 Georgia,serif;color:rgba(88,88,120,.6)
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SLIDE 4 · LEVERS
+══════════════════════════════════════════════════════════════════════════ */
+.levers-body{
+  flex:1;padding:13px 56px;overflow:hidden;
+  display:flex;flex-direction:column;gap:11px;min-height:0
+}
+.levers-row{display:flex;gap:11px;flex:1;overflow:hidden;min-height:0}
+.lever{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--card-b);
+  background:linear-gradient(145deg,rgba(var(--ar),.09) 0%,rgba(8,8,14,.65) 100%);
+  padding:16px 20px;position:relative
+}
+.lever::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--hi))
+}
+.lnum{
+  font:11px/1 'Courier New',monospace;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:7px;flex-shrink:0
+}
+.ltitle{
+  font:400 clamp(17px,1.9vw,22px)/1.2 Georgia,serif;
+  color:var(--text);margin-bottom:9px;flex-shrink:0
+}
+.lbody{
+  font:clamp(15px,1.45vw,17px)/1.64 system-ui,-apple-system,sans-serif;
+  color:var(--dim);overflow:hidden
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SLIDE 5 · WORKFLOW
+══════════════════════════════════════════════════════════════════════════ */
+.wf-outer{
+  flex:1;display:flex;flex-direction:column;
+  padding:14px 56px 8px;overflow:hidden;min-height:0
+}
+.wf-pipeline{
+  flex:1;display:grid;
+  grid-template-columns:1fr 58px 1fr 58px 1fr 58px 1fr 58px 1fr;
+  align-items:start;min-height:0;overflow:hidden
+}
+
+/* Phase column */
+.wf-phase{display:flex;flex-direction:column;align-items:center;padding:0 4px;overflow:hidden}
+
+/* Node circle */
+.wf-node{
+  position:relative;width:70px;height:70px;border-radius:50%;
+  border:1.5px solid var(--accent);
+  background:radial-gradient(circle at 36% 30%,rgba(var(--ar),.32),rgba(8,8,14,.92));
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 0 22px rgba(var(--ar),.22),inset 0 1px 0 rgba(176,78,200,.2)
+}
+.wf-node.last{
+  border-color:var(--hi);border-width:2px;
+  background:radial-gradient(circle at 36% 30%,rgba(var(--ar),.48),rgba(8,8,14,.88));
+  box-shadow:0 0 34px rgba(var(--ar),.4),inset 0 1px 0 rgba(200,110,230,.28)
+}
+
+/* Pulsing outer ring */
+.wf-ring{
+  position:absolute;inset:-7px;border-radius:50%;
+  border:1px solid rgba(var(--ar),.22);
+  animation:ring-pulse 3s ease-in-out infinite
+}
+.wf-node.last .wf-ring{border-color:rgba(176,78,200,.3);animation-duration:2.2s}
+@keyframes ring-pulse{
+  0%,100%{transform:scale(1);opacity:.5}
+  50%{transform:scale(1.12);opacity:.08}
+}
+
+.wf-nnum{font:700 16px/1 'Courier New',monospace;letter-spacing:.05em;color:var(--accent)}
+.wf-node.last .wf-nnum{color:var(--hi)}
+
+.wf-ntitle{
+  font:italic clamp(15px,1.55vw,17.5px)/1.3 Georgia,serif;
+  color:var(--text);text-align:center;margin-top:12px;flex-shrink:0
+}
+.wf-nitems{width:100%;margin-top:9px;overflow:hidden}
+.wf-nitem{
+  font:clamp(14.5px,1.38vw,16.5px)/1.6 system-ui,-apple-system,sans-serif;
+  color:var(--dim);margin-bottom:4px;padding-left:12px;position:relative
+}
+.wf-nitem::before{content:'·';position:absolute;left:0;color:var(--muted)}
+
+/* Arrow connector */
+.wf-arrow{
+  display:flex;align-items:flex-start;
+  justify-content:center;padding-top:24px
+}
+
+/* SVG line + head — drawn in on slide enter */
+.wf-line{
+  stroke:var(--hi);stroke-width:1.5;stroke-linecap:round;
+  stroke-dasharray:40;stroke-dashoffset:40;
+  fill:none
+}
+.wf-head{fill:var(--hi);opacity:0}
+
+.slide.active .wf-line{animation:line-draw .4s ease both}
+.slide.active .wf-head{animation:fade-in .25s ease both}
+
+/* Staggered entrance */
+.slide.active .wf-phase:nth-child(1){animation:phase-up .5s .05s ease both}
+.slide.active .wf-phase:nth-child(3){animation:phase-up .5s .18s ease both}
+.slide.active .wf-phase:nth-child(5){animation:phase-up .5s .31s ease both}
+.slide.active .wf-phase:nth-child(7){animation:phase-up .5s .44s ease both}
+.slide.active .wf-phase:nth-child(9){animation:phase-up .5s .57s ease both}
+
+.slide.active .wf-arrow:nth-child(2) .wf-line{animation-delay:.26s}
+.slide.active .wf-arrow:nth-child(2) .wf-head{animation-delay:.6s}
+.slide.active .wf-arrow:nth-child(4) .wf-line{animation-delay:.39s}
+.slide.active .wf-arrow:nth-child(4) .wf-head{animation-delay:.73s}
+.slide.active .wf-arrow:nth-child(6) .wf-line{animation-delay:.52s}
+.slide.active .wf-arrow:nth-child(6) .wf-head{animation-delay:.86s}
+.slide.active .wf-arrow:nth-child(8) .wf-line{animation-delay:.65s}
+.slide.active .wf-arrow:nth-child(8) .wf-head{animation-delay:.99s}
+
+@keyframes phase-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes line-draw{to{stroke-dashoffset:0}}
+@keyframes fade-in{to{opacity:1}}
+
+/* Loop bar */
+.wf-loop{
+  display:flex;align-items:center;gap:14px;flex-shrink:0;padding:9px 0 10px
+}
+.wf-loop-line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--rule) 18%,var(--rule) 82%,transparent)
+}
+.wf-loop-lbl{
+  font:9.5px/1 'Courier New',monospace;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media(max-width:768px){
+  .chrome,.shd,.sftr,.tkwy{padding-left:20px;padding-right:20px}
+  .cover-body,.levers-body{padding-left:20px;padding-right:20px}
+  .cmp-layout{grid-template-columns:1fr;padding:0 20px}
+  .cmp-div{display:none}
+  .cmp-col,.cmp-col.r{padding:10px 0;background:none}
+  .three-layout{flex-direction:column;padding:0 20px;overflow-y:auto}
+  .tcol{padding:10px 0;border-right:none;border-bottom:1px solid var(--rule);padding-left:0!important}
+  .levers-body{padding:10px 20px;gap:8px}
+  .levers-row{flex-direction:column;gap:8px}
+  .wf-outer{padding:10px 20px 8px;overflow-x:auto}
+  .wf-pipeline{min-width:680px}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- ══ SLIDE 1: COVER ════════════════════════════════════════════════════ -->
+<section class="slide active">
+  <div class="chrome">
+    <span class="cl">DSI · AWAY DAY</span>
+    <span class="cc">SLIDE 01 · WELCOME</span>
+    <span class="cr">MAY 2026</span>
+  </div>
+  <div class="cover-body">
+    <div class="cover-glow"></div>
+    <div class="cover-grid"></div>
+    <div class="cover-content">
+      <span class="c-eye">DSI · MAY AWAY DAY · 2026</span>
+      <h1 class="c-h1">AI Prototyping<br><em>Workshop</em></h1>
+      <p class="c-sub">From prompt to shipped — live.</p>
+      <div class="c-rule"></div>
+      <div class="c-brand-name">NatWest</div>
+      <div class="c-brand-sub">Data Science &amp; Innovation</div>
+    </div>
+  </div>
+  <div class="sftr"><span class="cnt">01 / 05</span></div>
+</section>
+
+<!-- ══ SLIDE 2: LLM VS AGENT ═════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="chrome">
+    <span class="cl">DSI · AWAY DAY</span>
+    <span class="cc">SLIDE 02 · LLM CHAT VS AI AGENT HARNESS</span>
+    <span class="cr">MAY 2026</span>
+  </div>
+  <div class="shd">
+    <span class="slabel">Foundations</span>
+    <h2 class="stitle">LLM Chat vs <em>AI Agent Harness</em></h2>
+  </div>
+  <div class="sbody">
+    <div class="cmp-layout">
+      <div class="cmp-col">
+        <div class="cmp-hd dim">LLM / Chat Interface</div>
+        <div class="cmp-item">You ask a question, it gives an answer</div>
+        <div class="cmp-item">Mostly conversation</div>
+        <div class="cmp-item">Best for brainstorming, writing, summarising</div>
+        <div class="cmp-item">Human does most of the execution</div>
+        <div class="cmp-item">Output is usually text</div>
+        <div class="cmp-note">Claude / Chat UI — strong for thinking, explaining, drafting, refining</div>
+      </div>
+      <div class="cmp-div"></div>
+      <div class="cmp-col r">
+        <div class="cmp-hd hi">AI Agent Harness</div>
+        <div class="cmp-item">You give a goal, it can take actions to achieve it</div>
+        <div class="cmp-item">Conversation plus tools, memory, permissions, and workflows</div>
+        <div class="cmp-item">Best for building, checking, testing, fixing, and iterating</div>
+        <div class="cmp-item">Agent can do parts of the execution under supervision</div>
+        <div class="cmp-item">Output can be code, edits, screenshots, test results, PRs, browser actions</div>
+        <div class="cmp-note">Claude Code — strong for acting inside a working environment with files, tools, terminal, browser, and review loops</div>
+      </div>
+    </div>
+  </div>
+  <div class="tkwy"><p>A chat interface gives you answers. An agent harness helps turn answers into <em>completed work</em>.</p></div>
+  <div class="sftr"><span class="cnt">02 / 05</span></div>
+</section>
+
+<!-- ══ SLIDE 3: THREE WAYS ════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="chrome">
+    <span class="cl">DSI · AWAY DAY</span>
+    <span class="cc">SLIDE 03 · CLAUDE DESKTOP APP — THREE WAYS TO WORK</span>
+    <span class="cr">MAY 2026</span>
+  </div>
+  <div class="shd">
+    <span class="slabel">Tools</span>
+    <h2 class="stitle">Claude Desktop App — <em>Three Ways to Work</em></h2>
+  </div>
+  <div class="sbody">
+    <div class="three-layout">
+      <div class="tcol">
+        <div class="col-badge"><div class="col-dot"></div><span class="col-tag">Chat</span></div>
+        <div class="col-title">Stateless</div>
+        <div class="col-item">One-off conversation</div>
+        <div class="col-item">No memory between sessions</div>
+        <div class="col-item">Best for questions and drafts</div>
+        <div class="col-item">Output is text</div>
+        <div class="col-item">You drive everything</div>
+        <div class="col-note">Great for quick thinking, summarising, explaining</div>
+      </div>
+      <div class="tcol">
+        <div class="col-badge"><div class="col-dot"></div><span class="col-tag">Projects (CoWork)</span></div>
+        <div class="col-title">Stateful</div>
+        <div class="col-item">Persistent workspace</div>
+        <div class="col-item">Shared context across sessions</div>
+        <div class="col-item">Best for ongoing team work</div>
+        <div class="col-item">Output is text plus files</div>
+        <div class="col-item">Claude remembers your project</div>
+        <div class="col-note">Great for collaborations that span days or weeks, shared with teammates</div>
+      </div>
+      <div class="tcol">
+        <div class="col-badge"><div class="col-dot"></div><span class="col-tag">Claude Code</span></div>
+        <div class="col-title">Agentic</div>
+        <div class="col-item">Agent inside your codebase</div>
+        <div class="col-item">Reads, edits, and runs files</div>
+        <div class="col-item">Best for building and iterating</div>
+        <div class="col-item">Output is code, tests, PRs, terminal actions</div>
+        <div class="col-item">Claude acts with your supervision</div>
+        <div class="col-note">Great for software tasks where Claude needs to see and change real artefacts</div>
+      </div>
+    </div>
+  </div>
+  <div class="tkwy"><p>Chat answers your question. Projects remembers your work. <em>Claude Code does the work with you.</em></p></div>
+  <div class="sftr"><span class="cnt">03 / 05</span></div>
+</section>
+
+<!-- ══ SLIDE 4: LEVERS ════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="chrome">
+    <span class="cl">DSI · AWAY DAY</span>
+    <span class="cc">SLIDE 04 · SETTING CLAUDE UP FOR SUCCESS</span>
+    <span class="cr">MAY 2026</span>
+  </div>
+  <div class="shd">
+    <span class="slabel">Configuration</span>
+    <h2 class="stitle">Setting Claude <em>Up for Success</em></h2>
+  </div>
+  <div class="sbody">
+    <div class="levers-body">
+      <div class="levers-row">
+        <div class="lever">
+          <span class="lnum">01 · Git</span>
+          <div class="ltitle">Version Control</div>
+          <p class="lbody">Gives Claude a safety net — it can diff, revert, and branch. Commit history is context Claude can read and reason about. Branches let Claude work in isolation before you review.</p>
+        </div>
+        <div class="lever">
+          <span class="lnum">02 · Memory</span>
+          <div class="ltitle">Persistent Facts</div>
+          <p class="lbody">Persistent facts across sessions. Stored as markdown files Claude reads at start of conversation. Types: user profile, project state, feedback corrections, external references.</p>
+        </div>
+        <div class="lever">
+          <span class="lnum">03 · CLAUDE.md</span>
+          <div class="ltitle">Rules File</div>
+          <p class="lbody">Project-level instructions checked into the repo. Define stack constraints, naming conventions, scope limits. Claude treats this as the source of truth for how to work in the project.</p>
+        </div>
+      </div>
+      <div class="levers-row">
+        <div class="lever">
+          <span class="lnum">04 · Skills</span>
+          <div class="ltitle">Slash Commands</div>
+          <p class="lbody">Reusable capabilities invoked with a slash command. Examples: /review, /plan, /security-review, /init, /graphify. Custom skills can encode team-specific workflows.</p>
+        </div>
+        <div class="lever">
+          <span class="lnum">05 · Permissions</span>
+          <div class="ltitle">Allowlist</div>
+          <p class="lbody">Explicit allowlist of what Claude can run automatically. Reduces friction for low-risk commands (read, test, lint). High-risk actions (push, deploy, delete) still prompt for approval.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tkwy"><p>The more context and guardrails you give Claude upfront, the <em>less supervision it needs</em> mid-task.</p></div>
+  <div class="sftr"><span class="cnt">04 / 05</span></div>
+</section>
+
+<!-- ══ SLIDE 5: WORKFLOW ══════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="chrome">
+    <span class="cl">DSI · AWAY DAY</span>
+    <span class="cc">SLIDE 05 · BUILDING WITH CLAUDE — FROM PROMPT TO SHIPPED</span>
+    <span class="cr">MAY 2026</span>
+  </div>
+  <div class="shd">
+    <span class="slabel">Process</span>
+    <h2 class="stitle">Building with Claude — <em>From Prompt to Shipped</em></h2>
+  </div>
+  <div class="sbody">
+    <div class="wf-outer">
+      <div class="wf-pipeline">
+
+        <div class="wf-phase">
+          <div class="wf-node">
+            <div class="wf-ring"></div>
+            <span class="wf-nnum">01</span>
+          </div>
+          <div class="wf-ntitle">Good Prompting</div>
+          <div class="wf-nitems">
+            <div class="wf-nitem">Point at what you see: "the hero section looks cramped on mobile"</div>
+            <div class="wf-nitem">Name the constraint: "only change the CSS, don't touch the HTML"</div>
+            <div class="wf-nitem">One visible goal per prompt — if you can screenshot it, it's scoped right</div>
+          </div>
+        </div>
+
+        <div class="wf-arrow">
+          <svg width="58" height="22" viewBox="0 0 58 22" fill="none" overflow="visible">
+            <line class="wf-line" x1="2" y1="11" x2="46" y2="11"/>
+            <polygon class="wf-head" points="42,5 56,11 42,17"/>
+          </svg>
+        </div>
+
+        <div class="wf-phase">
+          <div class="wf-node">
+            <div class="wf-ring"></div>
+            <span class="wf-nnum">02</span>
+          </div>
+          <div class="wf-ntitle">Plan Phase</div>
+          <div class="wf-nitems">
+            <div class="wf-nitem">Ask Claude to plan before it codes: "what would you change and why?"</div>
+            <div class="wf-nitem">Read the plan — reject wrong assumptions before a single line is written</div>
+            <div class="wf-nitem">Opus for tricky decisions, Sonnet for most feature work</div>
+          </div>
+        </div>
+
+        <div class="wf-arrow">
+          <svg width="58" height="22" viewBox="0 0 58 22" fill="none" overflow="visible">
+            <line class="wf-line" x1="2" y1="11" x2="46" y2="11"/>
+            <polygon class="wf-head" points="42,5 56,11 42,17"/>
+          </svg>
+        </div>
+
+        <div class="wf-phase">
+          <div class="wf-node">
+            <div class="wf-ring"></div>
+            <span class="wf-nnum">03</span>
+          </div>
+          <div class="wf-ntitle">Interview Phase</div>
+          <div class="wf-nitems">
+            <div class="wf-nitem">Claude asks questions before acting — answer them, don't skip</div>
+            <div class="wf-nitem">Hidden conflicts surface here: "that id is used by another team's section"</div>
+            <div class="wf-nitem">Shared understanding reached here saves rework later</div>
+          </div>
+        </div>
+
+        <div class="wf-arrow">
+          <svg width="58" height="22" viewBox="0 0 58 22" fill="none" overflow="visible">
+            <line class="wf-line" x1="2" y1="11" x2="46" y2="11"/>
+            <polygon class="wf-head" points="42,5 56,11 42,17"/>
+          </svg>
+        </div>
+
+        <div class="wf-phase">
+          <div class="wf-node">
+            <div class="wf-ring"></div>
+            <span class="wf-nnum">04</span>
+          </div>
+          <div class="wf-ntitle">Screenshot Feedback</div>
+          <div class="wf-nitems">
+            <div class="wf-nitem">Take a screenshot of your browser at any point</div>
+            <div class="wf-nitem">Paste or attach it: "this is what I see — fix the spacing"</div>
+            <div class="wf-nitem">Claude reads the visual and corrects accordingly</div>
+          </div>
+        </div>
+
+        <div class="wf-arrow">
+          <svg width="58" height="22" viewBox="0 0 58 22" fill="none" overflow="visible">
+            <line class="wf-line" x1="2" y1="11" x2="46" y2="11"/>
+            <polygon class="wf-head" points="42,5 56,11 42,17"/>
+          </svg>
+        </div>
+
+        <div class="wf-phase">
+          <div class="wf-node last">
+            <div class="wf-ring"></div>
+            <span class="wf-nnum">05</span>
+          </div>
+          <div class="wf-ntitle">Iteration Loop</div>
+          <div class="wf-nitems">
+            <div class="wf-nitem">prompt → Claude edits → you refresh → screenshot if something looks off</div>
+            <div class="wf-nitem">Small focused prompts give you a short, reviewable diff each time</div>
+            <div class="wf-nitem">Commit after each working step — safety net if the next prompt goes wrong</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="wf-loop">
+        <div class="wf-loop-line"></div>
+        <span class="wf-loop-lbl">↺ loop · iterate · ship</span>
+        <div class="wf-loop-line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="tkwy"><p>Build in short loops: prompt, look, screenshot, correct — the <em>browser is your shared source of truth</em>.</p></div>
+  <div class="sftr"><span class="cnt">05 / 05</span></div>
+</section>
+
+</div>
+<div class="pbar" id="pbar"></div>
+<div class="khint">← → navigate · space advance</div>
+<script>
+(function(){
+  var slides=Array.from(document.querySelectorAll('.slide'));
+  var pbar=document.getElementById('pbar');
+  var cur=0,startX=null;
+  function go(n){
+    slides[cur].classList.remove('active');
+    cur=((n%slides.length)+slides.length)%slides.length;
+    slides[cur].classList.add('active');
+    pbar.style.width=((cur+1)/slides.length*100)+'%';
+    try{localStorage.setItem('dk',cur)}catch(e){}
+  }
+  try{
+    var s=parseInt(localStorage.getItem('dk'));
+    if(!isNaN(s)&&s>0&&s<slides.length)go(s);
+    else pbar.style.width=(1/slides.length*100)+'%';
+  }catch(e){pbar.style.width=(1/slides.length*100)+'%'}
+  document.addEventListener('keydown',function(e){
+    if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+    if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+    if(e.key==='Home')go(0);if(e.key==='End')go(slides.length-1);
+  });
+  document.addEventListener('touchstart',function(e){startX=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(startX===null)return;
+    var dx=e.changedTouches[0].clientX-startX;
+    if(Math.abs(dx)>50){dx<0?go(cur+1):go(cur-1)}startX=null;
+  },{passive:true});
+  document.addEventListener('click',function(e){
+    if(e.target.closest('.khint'))return;
+    e.clientX>window.innerWidth*.5?go(cur+1):go(cur-1);
+  });
+})();
+</script>
+</body>
+</html>
