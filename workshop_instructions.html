@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,14 +8,18 @@
   <style>
     :root {
       --primary: #1a1a2e;
-      --accent:  #e94560;
-      --bg:      #f5f5f5;
-      --text:    #333333;
-      --muted:   #666666;
-      --border:  #dddddd;
+      --accent: #e94560;
+      --bg: #f5f5f5;
+      --text: #333333;
+      --muted: #666666;
+      --border: #dddddd;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -29,8 +34,14 @@
       padding: 2rem 1.5rem;
     }
 
-    header h1 { font-size: 2rem; margin-bottom: 0.25rem; }
-    header p  { color: #aaa; }
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    header p {
+      color: #aaa;
+    }
 
     nav {
       background: #e0e0e0;
@@ -58,7 +69,9 @@
       border-bottom: 1px solid var(--border);
     }
 
-    section:last-child { border-bottom: none; }
+    section:last-child {
+      border-bottom: none;
+    }
 
     h2 {
       font-size: 1.4rem;
@@ -72,12 +85,22 @@
       color: var(--primary);
     }
 
-    p { margin-bottom: 0.75rem; }
+    p {
+      margin-bottom: 0.75rem;
+    }
 
-    ul, ol { padding-left: 1.25rem; margin-bottom: 0.75rem; }
-    li { margin-bottom: 0.4rem; }
+    ul,
+    ol {
+      padding-left: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
 
-    code, pre {
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    code,
+    pre {
       font-family: "SF Mono", Menlo, Consolas, monospace;
       font-size: 0.85rem;
     }
@@ -98,7 +121,11 @@
       line-height: 1.45;
     }
 
-    pre code { background: transparent; padding: 0; color: inherit; }
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
 
     .badge {
       display: inline-block;
@@ -111,9 +138,20 @@
       vertical-align: middle;
     }
 
-    .badge-must   { background: var(--accent); color: white; }
-    .badge-should { background: var(--primary); color: white; }
-    .badge-auto   { background: var(--muted); color: white; }
+    .badge-must {
+      background: var(--accent);
+      color: white;
+    }
+
+    .badge-should {
+      background: var(--primary);
+      color: white;
+    }
+
+    .badge-auto {
+      background: var(--muted);
+      color: white;
+    }
 
     .callout {
       background: white;
@@ -125,7 +163,9 @@
       font-size: 0.95rem;
     }
 
-    .callout strong { color: var(--text); }
+    .callout strong {
+      color: var(--text);
+    }
 
     footer {
       background: var(--primary);
@@ -136,6 +176,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <header id="header">
@@ -175,11 +216,13 @@
       <h2>How to log in</h2>
       <ol>
         <li>Install the <strong>Claude Code</strong> app.</li>
-        <li>Sign in with <code>dsi.ai.prototyping@gmail.com</code>.</li>
+        <li>Sign in with email: <code>dsi.ai.prototyping@gmail.com</code>.</li>
         <li>Enter the login code (the organizers will read it out).</li>
-        <li>In the app, go to <strong>Code &rarr; New Session</strong> and send your first message to start the session.</li>
+        <li>In the app, go to <strong>Code &rarr; New Session</strong> and send your first message to start the session.
+        </li>
         <li><strong>Rename the session</strong> to something like your team name (top of the session panel).</li>
-        <li><strong>Rename the branch</strong> to <code>team-&lt;your-name&gt;</code> so the preview URL you share is readable.</li>
+        <li><strong>Ask the agent to rename the branch</strong> to <code>team-&lt;your-name&gt;</code> so the preview
+          URL you share is readable.</li>
       </ol>
       <div class="callout">
         <strong>The agent will remind you.</strong> Your first message in a
@@ -195,11 +238,15 @@
         only authors are strictly required.
       </p>
       <ul>
-        <li><strong>Hero / title image</strong> <span class="badge badge-should">SHOULD</span> — a header with the post title and a cover image.</li>
-        <li><strong>Authors</strong> <span class="badge badge-must">MUST</span> — your team members' names as the byline. The agent will ask if missing at commit time.</li>
+        <li><strong>Hero / title image</strong> <span class="badge badge-should">SHOULD</span> — a header with the post
+          title and a cover image.</li>
+        <li><strong>Authors</strong> <span class="badge badge-must">MUST</span> — your team members' names as the
+          byline. The agent will ask if missing at commit time.</li>
         <li><strong>Date</strong> <span class="badge badge-auto">AUTO</span> — the agent sets this at commit time.</li>
-        <li><strong>Body &mdash; at least 3 sections</strong> <span class="badge badge-should">SHOULD</span> &mdash; suggested: <em>Agenda / Purpose</em>, <em>UI overhaul</em>, <em>Image gallery or visual elements</em>.</li>
-        <li><strong>Comments widget at the end</strong> <span class="badge badge-should">SHOULD</span> &mdash; a name + comment form, persisted via <code>localStorage</code>, rendering submitted comments below.</li>
+        <li><strong>Body &mdash; at least 3 sections</strong> <span class="badge badge-should">SHOULD</span> &mdash;
+          suggested: <em>Agenda / Purpose</em>, <em>UI overhaul</em>, <em>Image gallery or visual elements</em>.</li>
+        <li><strong>Comments widget at the end</strong> <span class="badge badge-should">SHOULD</span> &mdash; a name +
+          comment form, persisted via <code>localStorage</code>, rendering submitted comments below.</li>
       </ul>
       <div class="callout">
         <strong>Comments widget hint.</strong> Persist to a key like
@@ -212,16 +259,20 @@
       <h2>Rules</h2>
       <ul>
         <li>Pure HTML, CSS, and vanilla JavaScript only. No npm packages, no frameworks, no build tools.</li>
-        <li>One <code>&lt;style&gt;</code> block in <code>&lt;head&gt;</code>. One <code>&lt;script&gt;</code> block at the end of <code>&lt;body&gt;</code>.</li>
+        <li>One <code>&lt;style&gt;</code> block in <code>&lt;head&gt;</code>. One <code>&lt;script&gt;</code> block at
+          the end of <code>&lt;body&gt;</code>.</li>
         <li>No inline styles. No external <code>.css</code> or <code>.js</code> files.</li>
         <li>CDN allowed for Google Fonts and Lucide icons only.</li>
-        <li>Prefer the <code>:root</code> CSS variables for any brand or repeated colour. Add new variables if you need them; don't rename or remove the existing six.</li>
+        <li>Prefer the <code>:root</code> CSS variables for any brand or repeated colour. Add new variables if you need
+          them; don't rename or remove the existing six.</li>
         <li>Mobile-responsive &mdash; use relative units, sanity-check at 375px.</li>
         <li>Semantic HTML &mdash; proper elements, not div soup.</li>
-        <li><strong>Photos</strong> must be committed to <code>assets/awayday/&lt;descriptive-name&gt;.&lt;ext&gt;</code> and referenced via the raw-GitHub URL for your current branch. Relative paths break in htmlpreview.</li>
+        <li><strong>Photos</strong> must be committed to
+          <code>assets/awayday/&lt;descriptive-name&gt;.&lt;ext&gt;</code> and referenced via the raw-GitHub URL for
+          your current branch. Relative paths break in htmlpreview.</li>
       </ul>
       <h3>CSS variables (do not rename or remove)</h3>
-<pre><code>--primary: #1a1a2e
+      <pre><code>--primary: #1a1a2e
 --accent:  #e94560
 --bg:      #f5f5f5
 --text:    #333333
@@ -235,11 +286,12 @@
         Previews go through <code>htmlpreview.github.io</code>. The URL has the
         shape:
       </p>
-<pre><code>https://htmlpreview.github.io/?https://raw.githubusercontent.com/&lt;owner&gt;/&lt;repo&gt;/&lt;branch&gt;/&lt;file&gt;</code></pre>
+      <pre><code>https://htmlpreview.github.io/?https://raw.githubusercontent.com/&lt;owner&gt;/&lt;repo&gt;/&lt;branch&gt;/&lt;file&gt;</code></pre>
       <p>There is one rule about which <code>&lt;branch&gt;</code> goes in:</p>
       <ul>
         <li><strong>These instructions</strong> always preview off <code>main</code> &mdash; they don't change.</li>
-        <li><strong>Your blog</strong> always previews off your team's current branch &mdash; that's where the edits live.</li>
+        <li><strong>Your blog</strong> always previews off your team's current branch &mdash; that's where the edits
+          live.</li>
       </ul>
       <div class="callout">
         Your agent will print the right URL for you after every change to
@@ -251,19 +303,26 @@
     <section id="review">
       <h2>How you'll be reviewed</h2>
       <ul>
-        <li><strong>Completion of features</strong> &mdash; how much of the suggested blog structure you got working end-to-end.</li>
-        <li><strong>General UI aesthetics</strong> &mdash; does the page look like a real blog post? Typography, spacing, colour, layout.</li>
-        <li><strong>Use of skills &amp; best practices</strong> &mdash; the quality of your prompting, sensible commits, clean structure, and using the tools the right way.</li>
+        <li><strong>Completion of features</strong> &mdash; how much of the suggested blog structure you got working
+          end-to-end.</li>
+        <li><strong>General UI aesthetics</strong> &mdash; does the page look like a real blog post? Typography,
+          spacing, colour, layout.</li>
+        <li><strong>Use of skills &amp; best practices</strong> &mdash; the quality of your prompting, sensible commits,
+          clean structure, and using the tools the right way.</li>
       </ul>
     </section>
 
     <section id="prompting">
       <h2>Tips for prompting</h2>
       <ul>
-        <li><strong>Be specific.</strong> "Make a hero with a centred title, a subtitle in muted grey, and a full-width cover image" beats "make a nice header".</li>
-        <li><strong>Iterate.</strong> Ship a rough version, then improve it one piece at a time. Don't try to one-shot the whole page.</li>
-        <li><strong>Show examples.</strong> Paste a snippet you like, name the blog post you want it to feel like, or describe the vibe in plain language.</li>
-        <li><strong>Ask the agent to plan first.</strong> "Before writing code, tell me what you'll change and where" surfaces misunderstandings cheaply.</li>
+        <li><strong>Be specific.</strong> "Make a hero with a centred title, a subtitle in muted grey, and a full-width
+          cover image" beats "make a nice header".</li>
+        <li><strong>Iterate.</strong> Ship a rough version, then improve it one piece at a time. Don't try to one-shot
+          the whole page.</li>
+        <li><strong>Show examples.</strong> Paste a snippet you like, name the blog post you want it to feel like, or
+          describe the vibe in plain language.</li>
+        <li><strong>Ask the agent to plan first.</strong> "Before writing code, tell me what you'll change and where"
+          surfaces misunderstandings cheaply.</li>
       </ul>
     </section>
 
@@ -274,4 +333,5 @@
   </footer>
 
 </body>
+
 </html>
