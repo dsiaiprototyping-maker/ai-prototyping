@@ -48,32 +48,6 @@ Skip the checklist on follow-up messages once setup is acknowledged.
   `#publish-date` span's text with today's date and remove its `placeholder`
   class.
 
-## Photo handling
-
-When the user provides an image:
-
-1. Save it to `assets/awayday/<descriptive-kebab-name>.<ext>` (e.g.
-   `assets/awayday/group-photo-morning.jpg`).
-2. Compress images before committing them. Run:
-
-   ```
-   bash scripts/compress-awayday-images.sh assets/awayday
-   ```
-
-   The script uses ImageMagick if available, or macOS `sips` as a fallback.
-3. Reference it in `DSI-Awayday-blog.html` via the raw-GitHub URL for the
-   current branch:
-
-   ```
-   https://raw.githubusercontent.com/<owner>/<repo>/<current-branch>/assets/awayday/<name>.<ext>
-   ```
-
-Never use a relative path (`./assets/...`) or an absolute local path —
-htmlpreview cannot resolve either and the image will break.
-
-Derive `<owner>` and `<repo>` from `git remote get-url origin`, and
-`<current-branch>` from `git rev-parse --abbrev-ref HEAD`.
-
 ## htmlpreview URLs (split rule)
 
 URL shape:
@@ -131,9 +105,7 @@ All output must be mobile-responsive. Use relative units. Sanity-check at
 ## Structure rules for `DSI-Awayday-blog.html`
 
 - Keep the existing section IDs (`hero`, `authors`, `purpose`, `ui-overhaul`,
-  `gallery`, `comments`, `footer`). You may add more sections.
-- The image gallery must contain **no more than 3 photos**. If the user
-  provides more, ask them to choose the best 3 before updating the gallery.
+  `comments`, `footer`). You may add more sections.
 - New elements must have meaningful IDs or class names.
 - Semantic HTML — proper elements, not div soup.
 
@@ -142,9 +114,6 @@ All output must be mobile-responsive. Use relative units. Sanity-check at
 1. Read this entire file first.
 2. On a fresh session, run the setup checklist above.
 3. Make the smallest set of changes that achieves the user's goal.
-4. Before committing, run `bash scripts/compress-awayday-images.sh assets/awayday`
-   if any image files were added or changed.
-5. **Before outputting any htmlpreview URL**, commit and push all pending
-   changes — including any image files added to `assets/awayday/`. The raw
-   GitHub URL used by htmlpreview only resolves content that is already
-   pushed to the remote. Never share a preview link before pushing.
+4. **Before outputting any htmlpreview URL**, commit and push all pending
+   changes. The raw GitHub URL used by htmlpreview only resolves content that
+   is already pushed to the remote. Never share a preview link before pushing.
