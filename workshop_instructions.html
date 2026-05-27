@@ -191,6 +191,7 @@
     <a href="#preview">Preview</a>
     <a href="#review">Review</a>
     <a href="#prompting">Prompting</a>
+    <a href="#extras">Extras</a>
   </nav>
 
   <main>
@@ -241,10 +242,15 @@
         <li><strong>Authors</strong> <span class="badge badge-must">MUST</span> — your team members' names as the
           byline. The agent will ask if missing at commit time.</li>
         <li><strong>Date</strong> <span class="badge badge-auto">AUTO</span> — the agent sets this at commit time.</li>
-        <li><strong>Body &mdash; at least 3 sections</strong> <span class="badge badge-should">SHOULD</span> &mdash;
-          suggested: <em>Agenda / Purpose</em>, <em>UI overhaul</em>, <em>Highlights or reflections</em>.</li>
+        <li><strong>Away Day Agenda</strong> <span class="badge badge-should">SHOULD</span> — the schedule of the day,
+          what happened and when.</li>
+        <li><strong>What We Worked On</strong> <span class="badge badge-should">SHOULD</span> — a narrative section
+          describing the problem your team explored, your approach, and what you discovered.</li>
+        <li><strong>Key Takeaways</strong> <span class="badge badge-should">SHOULD</span> — a short bullet list of the
+          most important things your team learned.</li>
         <li><strong>Comments widget at the end</strong> <span class="badge badge-should">SHOULD</span> &mdash; a name +
-          comment form, persisted via <code>localStorage</code>, rendering submitted comments below.</li>
+          comment form you build yourself, persisted via <code>localStorage</code>, rendering submitted comments below.
+          The starter template has a placeholder — the JS is yours to write.</li>
       </ul>
       <div class="callout">
         <strong>Comments widget hint.</strong> Persist to a key like
@@ -275,6 +281,33 @@
           spacing, colour, layout.</li>
         <li><strong>Use of skills &amp; best practices</strong> &mdash; the quality of your prompting, sensible commits,
           clean structure, and using the tools the right way.</li>
+      </ul>
+    </section>
+
+    <section id="extras">
+      <h2>Extra features to explore</h2>
+      <p>Once the core sections are done, try building one of these. Each is a self-contained JS or CSS challenge.</p>
+      <ul>
+        <li>
+          <strong>Dark mode toggle</strong> — a button in the header that switches the page between light and dark
+          themes. Swap a <code>data-theme</code> attribute on <code>&lt;body&gt;</code> and use CSS variables to
+          restyle. Persist the preference in <code>localStorage</code> so it survives a reload.
+        </li>
+        <li>
+          <strong>Reading progress bar</strong> — a thin accent-coloured bar fixed to the top of the viewport that
+          fills from left to right as the user scrolls down the page. One <code>scroll</code> event listener and a
+          CSS <code>width</code> calculation.
+        </li>
+        <li>
+          <strong>Back to top button</strong> — a button that appears once the user scrolls past the hero, and
+          smooth-scrolls back to the top when clicked. Show/hide it by toggling a class on a <code>scroll</code>
+          event.
+        </li>
+        <li>
+          <strong>Table of contents</strong> — automatically generated from the <code>&lt;h2&gt;</code> headings on
+          the page. Render it as a sticky panel on the left at wide viewports (collapsed on mobile). Clicking an
+          entry smooth-scrolls to that section.
+        </li>
       </ul>
     </section>
 

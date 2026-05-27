@@ -48,6 +48,61 @@ Skip the checklist on follow-up messages once setup is acknowledged.
   `#publish-date` span's text with today's date and remove its `placeholder`
   class.
 
+## Comments widget
+
+The `#comments` section in `DSI-Awayday-blog.html` is intentionally left
+as a placeholder — teams must implement it themselves. When a team asks
+you to help build it, guide them using this reference implementation:
+
+```js
+(function () {
+  var STORAGE_KEY = 'awayday_blog_comments';
+  var form = document.getElementById('comment-form');
+  var nameInput = document.getElementById('comment-name');
+  var textInput = document.getElementById('comment-text');
+  var list = document.getElementById('comments-list');
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function save(comments) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
+  }
+  function render(comments) {
+    list.innerHTML = '';
+    comments.slice().reverse().forEach(function (c) {
+      var li = document.createElement('li');
+      var meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = c.name + ' · ' + c.time;
+      var body = document.createElement('div');
+      body.textContent = c.text;
+      li.appendChild(meta);
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = nameInput.value.trim();
+    var text = textInput.value.trim();
+    if (!name || !text) return;
+    var comments = load();
+    comments.push({ name: name, text: text, time: new Date().toLocaleString() });
+    save(comments);
+    nameInput.value = '';
+    textInput.value = '';
+    render(comments);
+  });
+  render(load());
+})();
+```
+
+The page must remain **self-contained** — all JS goes inside the single
+`<script>` block at the end of `<body>`. No `<script src="...">` tags.
+This is a hard requirement: htmlpreview cannot load external files.
+
 ## htmlpreview URLs (split rule)
 
 URL shape:
@@ -96,6 +151,9 @@ variable would do.
 - No relative or absolute local file path references (`./style.css`,
   `/app.js`, `images/foo.png`) — these break in htmlpreview.
 - CDN URLs and raw-GitHub URLs are fine.
+- All JavaScript must live in the single `<script>` block at the end of
+  `<body>`. No `<script src="...">` tags — htmlpreview cannot load external
+  scripts and the page will silently break.
 
 ## Responsive
 
@@ -104,8 +162,9 @@ All output must be mobile-responsive. Use relative units. Sanity-check at
 
 ## Structure rules for `DSI-Awayday-blog.html`
 
-- Keep the existing section IDs (`hero`, `authors`, `purpose`, `ui-overhaul`,
-  `comments`, `footer`). You may add more sections.
+- Keep the existing section IDs (`hero`, `authors`, `agenda`,
+  `what-we-worked-on`, `key-takeaways`, `comments`, `footer`). You may add
+  more sections.
 - New elements must have meaningful IDs or class names.
 - Semantic HTML — proper elements, not div soup.
 

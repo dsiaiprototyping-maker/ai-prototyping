@@ -67,54 +67,36 @@
       font-size: 0.95rem;
     }
 
-    #comments form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
+    .callout {
+      background: white;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 2.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
     }
 
-    #comments input,
-    #comments textarea {
-      font: inherit;
-      padding: 0.5rem 0.65rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: white;
+    .callout strong {
       color: var(--text);
     }
 
-    #comments textarea { min-height: 4rem; resize: vertical; }
-
-    #comments button {
-      align-self: flex-start;
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font: inherit;
+    #agenda ol {
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
     }
 
-    #comments-list {
-      margin-top: 1rem;
-      list-style: none;
-      padding: 0;
+    #agenda li {
+      margin-bottom: 0.4rem;
     }
 
-    #comments-list li {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.65rem 0.85rem;
-      margin-bottom: 0.5rem;
+    #key-takeaways ul {
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
     }
 
-    #comments-list .meta {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
+    #key-takeaways li {
+      margin-bottom: 0.4rem;
     }
 
     footer#footer {
@@ -141,28 +123,41 @@
 
     <section id="authors">
       <h2>Authors</h2>
-      <p>Authors: Lohit &amp; Saqib</p>
+      <p class="placeholder">Replace with your team members' names.</p>
     </section>
 
-    <section id="purpose">
-      <h2>Agenda / Purpose</h2>
-      <p class="placeholder">Replace this with a short section about why the DSI AwayDay happened &mdash; the agenda, the purpose, what the day was meant to achieve.</p>
+    <div class="callout">
+      <strong>UI challenge:</strong> This page is intentionally bare. Your challenge: make it look like a real blog post. Improve the typography, layout, colours, spacing &mdash; whatever you think it needs.
+    </div>
+
+    <section id="agenda">
+      <h2>Away Day Agenda</h2>
+      <ol class="placeholder">
+        <li>09:00 &mdash; Welcome &amp; introductions</li>
+        <li>10:00 &mdash; Morning sessions (replace with actual agenda)</li>
+        <li>12:30 &mdash; Lunch break</li>
+        <li>14:00 &mdash; Afternoon workshops</li>
+        <li>16:30 &mdash; Show &amp; tell / wrap-up</li>
+      </ol>
     </section>
 
-    <section id="ui-overhaul">
-      <h2>UI overhaul</h2>
-      <p class="placeholder">Replace this with a section about a visual or design idea your team explored &mdash; before/after, what changed, why it works.</p>
+    <section id="what-we-worked-on">
+      <h2>What We Worked On</h2>
+      <p class="placeholder">Replace this with a description of what your team explored or built during the AwayDay &mdash; the problem, your approach, and what you discovered.</p>
+    </section>
+
+    <section id="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul class="placeholder">
+        <li>Sovereign AI and what it means for DSI</li>
+        <li>How knowledge graphs can power smarter search</li>
+        <li>Replace with your own key takeaway</li>
+      </ul>
     </section>
 
     <section id="comments">
       <h2>Comments</h2>
-      <p class="placeholder">Readers can leave a comment below. Comments persist in this browser via <code>localStorage</code>.</p>
-      <form id="comment-form">
-        <input type="text" id="comment-name" placeholder="Your name" required />
-        <textarea id="comment-text" placeholder="Your comment" required></textarea>
-        <button type="submit">Post comment</button>
-      </form>
-      <ul id="comments-list"></ul>
+      <p class="placeholder">Add a comment form here. Persist comments to <code>localStorage</code> under the key <code>awayday_blog_comments</code>. Each record needs a name, comment text, and timestamp. Render newest first.</p>
     </section>
 
   </main>
@@ -170,57 +165,6 @@
   <footer id="footer">
     <p>Published: <span id="publish-date">2026-05-27</span> &middot; DSI AwayDay Blog</p>
   </footer>
-
-  <script>
-    (function () {
-      var STORAGE_KEY = 'awayday_blog_comments';
-      var form = document.getElementById('comment-form');
-      var nameInput = document.getElementById('comment-name');
-      var textInput = document.getElementById('comment-text');
-      var list = document.getElementById('comments-list');
-
-      function load() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-        catch (e) { return []; }
-      }
-
-      function save(comments) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
-      }
-
-      function render(comments) {
-        list.innerHTML = '';
-        comments.slice().reverse().forEach(function (c) {
-          var li = document.createElement('li');
-          var meta = document.createElement('div');
-          meta.className = 'meta';
-          meta.textContent = c.name + ' · ' + c.time;
-          var body = document.createElement('div');
-          body.textContent = c.text;
-          li.appendChild(meta);
-          li.appendChild(body);
-          list.appendChild(li);
-        });
-      }
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var name = nameInput.value.trim();
-        var text = textInput.value.trim();
-        if (!name || !text) return;
-        var now = new Date();
-        var time = now.toLocaleString();
-        var comments = load();
-        comments.push({ name: name, text: text, time: time });
-        save(comments);
-        nameInput.value = '';
-        textInput.value = '';
-        render(comments);
-      });
-
-      render(load());
-    })();
-  </script>
 
 </body>
 </html>
