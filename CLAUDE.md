@@ -133,6 +133,7 @@ All output must be mobile-responsive. Use relative units. Sanity-check at
 1. Read this entire file first.
 2. On a fresh session, run the setup checklist above.
 3. Make the smallest set of changes that achieves the user's goal.
-4. After every change to `DSI-Awayday-blog.html`, print the blog's
-   htmlpreview URL for the current branch so the user can verify in a
-   browser.
+4. **Before outputting any htmlpreview URL**, commit and push all pending
+   changes — including any image files added to `assets/awayday/`. The raw
+   GitHub URL used by htmlpreview only resolves content that is already
+   pushed to the remote. Never share a preview link before pushing.
