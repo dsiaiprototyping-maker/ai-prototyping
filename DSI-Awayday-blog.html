@@ -94,6 +94,14 @@
       font-size: 0.85rem;
     }
 
+    #gallery .gallery-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+
     #comments form {
       display: flex;
       flex-direction: column;
@@ -186,7 +194,7 @@
       <h2>Image gallery</h2>
       <p class="placeholder">Replace these placeholders with photos from the AwayDay. Commit each to <code>assets/awayday/</code> and reference via the raw-GitHub URL for your branch.</p>
       <div class="gallery-grid">
-        <div>Photo 1 placeholder</div>
+        <img src="https://raw.githubusercontent.com/dsiaiprototyping-maker/ai-prototyping/team-the-magnificent-tree/assets/awayday/phone-emergency-screen.jpg" alt="Phone emergency screen" />
         <div>Photo 2 placeholder</div>
         <div>Photo 3 placeholder</div>
       </div>
