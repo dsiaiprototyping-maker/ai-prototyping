@@ -188,7 +188,6 @@
     <a href="#what">What</a>
     <a href="#login">Log in</a>
     <a href="#structure">Structure</a>
-    <a href="#rules">Rules</a>
     <a href="#preview">Preview</a>
     <a href="#review">Review</a>
     <a href="#prompting">Prompting</a>
@@ -208,7 +207,7 @@
       <p>
         The page you're reading is the workshop brief. It does not change.
         Everyone in the room is working from this same set of instructions —
-        your branch contains your blog, not a copy of these rules.
+        your branch contains your blog, not a copy of these instructions.
       </p>
     </section>
 
@@ -220,6 +219,7 @@
         <li>Enter the login code (the organizers will read it out).</li>
         <li>In the app, go to <strong>Code &rarr; New Session</strong> and send your first message to start the session.
         </li>
+        <li>Select the <strong>Haiku</strong> model.</li>
         <li><strong>Rename the session</strong> to something like your team name (top of the session panel).</li>
         <li><strong>Ask the agent to rename the branch</strong> to <code>team-&lt;your-name&gt;</code> so the preview
           URL you share is readable.</li>
@@ -255,53 +255,21 @@
       </div>
     </section>
 
-    <section id="rules">
-      <h2>Rules</h2>
-      <ul>
-        <li>Pure HTML, CSS, and vanilla JavaScript only. No npm packages, no frameworks, no build tools.</li>
-        <li>One <code>&lt;style&gt;</code> block in <code>&lt;head&gt;</code>. One <code>&lt;script&gt;</code> block at
-          the end of <code>&lt;body&gt;</code>.</li>
-        <li>No inline styles. No external <code>.css</code> or <code>.js</code> files.</li>
-        <li>CDN allowed for Google Fonts and Lucide icons only.</li>
-        <li>Prefer the <code>:root</code> CSS variables for any brand or repeated colour. Add new variables if you need
-          them; don't rename or remove the existing six.</li>
-        <li>Mobile-responsive &mdash; use relative units, sanity-check at 375px.</li>
-        <li>Semantic HTML &mdash; proper elements, not div soup.</li>
-        <li><strong>Photos</strong> must be committed to
-          <code>assets/awayday/&lt;descriptive-name&gt;.&lt;ext&gt;</code> and referenced via the raw-GitHub URL for
-          your current branch. Relative paths break in htmlpreview.</li>
-      </ul>
-      <h3>CSS variables (do not rename or remove)</h3>
-      <pre><code>--primary: #1a1a2e
---accent:  #e94560
---bg:      #f5f5f5
---text:    #333333
---muted:   #666666
---border:  #dddddd</code></pre>
-    </section>
-
     <section id="preview">
       <h2>How to preview</h2>
       <p>
-        Previews go through <code>htmlpreview.github.io</code>. The URL has the
-        shape:
+        When you want to see your work, ask the agent to preview
+        <code>DSI-Awayday-blog.html</code>.
       </p>
-      <pre><code>https://htmlpreview.github.io/?https://raw.githubusercontent.com/&lt;owner&gt;/&lt;repo&gt;/&lt;branch&gt;/&lt;file&gt;</code></pre>
-      <p>There is one rule about which <code>&lt;branch&gt;</code> goes in:</p>
-      <ul>
-        <li><strong>These instructions</strong> always preview off <code>main</code> &mdash; they don't change.</li>
-        <li><strong>Your blog</strong> always previews off your team's current branch &mdash; that's where the edits
-          live.</li>
-      </ul>
       <div class="callout">
-        Your agent will print the right URL for you after every change to
-        <code>DSI-Awayday-blog.html</code>. Share that URL when it's time to
-        show your work.
+        The agent will commit the latest changes, generate the correct preview
+        URL for your team's branch, and give you the link to share when it's
+        time to show your work.
       </div>
     </section>
 
     <section id="review">
-      <h2>How you'll be reviewed</h2>
+      <h2>How your work will be evaluated</h2>
       <ul>
         <li><strong>Completion of features</strong> &mdash; how much of the suggested blog structure you got working
           end-to-end.</li>
@@ -309,20 +277,23 @@
           spacing, colour, layout.</li>
         <li><strong>Use of skills &amp; best practices</strong> &mdash; the quality of your prompting, sensible commits,
           clean structure, and using the tools the right way.</li>
+        <li><strong>Photo gallery bonus</strong> &mdash; photos with <strong style="color: var(--accent);">Raad</strong>
+          (<strong style="color: var(--accent);">10x</strong>) will get
+          additional points.</li>
+
       </ul>
     </section>
 
     <section id="prompting">
-      <h2>Tips for prompting</h2>
+      <h2>Tips for shipping features</h2>
       <ul>
         <li><strong>Be specific.</strong> "Make a hero with a centred title, a subtitle in muted grey, and a full-width
           cover image" beats "make a nice header".</li>
+        <li><strong>Include planning and interview phases.</strong> Ask the agent to plan first, then interview you
+          for missing details before it writes code.</li>
         <li><strong>Iterate.</strong> Ship a rough version, then improve it one piece at a time. Don't try to one-shot
           the whole page.</li>
-        <li><strong>Show examples.</strong> Paste a snippet you like, name the blog post you want it to feel like, or
-          describe the vibe in plain language.</li>
-        <li><strong>Ask the agent to plan first.</strong> "Before writing code, tell me what you'll change and where"
-          surfaces misunderstandings cheaply.</li>
+        <li><strong>Give feedback.</strong> Tell the agent what works, what feels wrong, and what to change next.</li>
       </ul>
     </section>
 

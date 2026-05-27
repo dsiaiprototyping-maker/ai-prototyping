@@ -54,7 +54,14 @@ When the user provides an image:
 
 1. Save it to `assets/awayday/<descriptive-kebab-name>.<ext>` (e.g.
    `assets/awayday/group-photo-morning.jpg`).
-2. Reference it in `DSI-Awayday-blog.html` via the raw-GitHub URL for the
+2. Compress images before committing them. Run:
+
+   ```
+   bash scripts/compress-awayday-images.sh assets/awayday
+   ```
+
+   The script uses ImageMagick if available, or macOS `sips` as a fallback.
+3. Reference it in `DSI-Awayday-blog.html` via the raw-GitHub URL for the
    current branch:
 
    ```
@@ -125,6 +132,8 @@ All output must be mobile-responsive. Use relative units. Sanity-check at
 
 - Keep the existing section IDs (`hero`, `authors`, `purpose`, `ui-overhaul`,
   `gallery`, `comments`, `footer`). You may add more sections.
+- The image gallery must contain **no more than 3 photos**. If the user
+  provides more, ask them to choose the best 3 before updating the gallery.
 - New elements must have meaningful IDs or class names.
 - Semantic HTML — proper elements, not div soup.
 
@@ -133,7 +142,9 @@ All output must be mobile-responsive. Use relative units. Sanity-check at
 1. Read this entire file first.
 2. On a fresh session, run the setup checklist above.
 3. Make the smallest set of changes that achieves the user's goal.
-4. **Before outputting any htmlpreview URL**, commit and push all pending
+4. Before committing, run `bash scripts/compress-awayday-images.sh assets/awayday`
+   if any image files were added or changed.
+5. **Before outputting any htmlpreview URL**, commit and push all pending
    changes — including any image files added to `assets/awayday/`. The raw
    GitHub URL used by htmlpreview only resolves content that is already
    pushed to the remote. Never share a preview link before pushing.
