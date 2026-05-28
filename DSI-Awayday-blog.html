@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DSI AwayDay — Team Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #1a1a2e;
@@ -13,6 +14,11 @@
       --text: #333333;
       --muted: #666666;
       --border: #dddddd;
+      --font-serif: "Fraunces", serif;
+      --font-sans: "Inter", sans-serif;
+      --primary-dark: #0f0f1a;
+      --accent-light: rgba(233, 69, 96, 0.08);
+      --shadow: rgba(0, 0, 0, 0.06);
     }
 
     * {
@@ -22,10 +28,11 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font-sans);
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      font-weight: 400;
     }
 
     .placeholder {
@@ -34,26 +41,30 @@
     }
 
     header#hero {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: white;
-      padding: 3rem 1.5rem;
+      padding: 4rem 1.5rem;
       text-align: center;
     }
 
     header#hero h1 {
-      font-size: 2.25rem;
-      margin-bottom: 0.5rem;
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
     }
 
     main {
       max-width: 760px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 3rem 1.5rem;
     }
 
     section {
-      margin-bottom: 2.5rem;
-      padding-bottom: 1.75rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
       border-bottom: 1px solid var(--border);
     }
 
@@ -62,67 +73,181 @@
     }
 
     h2 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
       color: var(--primary);
+      letter-spacing: 0.01em;
     }
 
     p {
       margin-bottom: 0.75rem;
     }
 
+    #authors {
+      border-bottom: none;
+      margin-bottom: 2.5rem;
+      padding-bottom: 0.5rem;
+    }
+
     #authors p {
       color: var(--muted);
       font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      font-variant: small-caps;
     }
 
     .callout {
       background: white;
       border-left: 4px solid var(--accent);
-      border-radius: 4px;
-      padding: 0.85rem 1rem;
+      border-right: 1px solid rgba(233, 69, 96, 0.15);
+      border-top: 1px solid rgba(233, 69, 96, 0.15);
+      border-bottom: 1px solid rgba(233, 69, 96, 0.15);
+      border-radius: 6px;
+      padding: 1.25rem 1.25rem;
       margin-bottom: 2.5rem;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.98rem;
+      line-height: 1.7;
+      box-shadow: 0 2px 8px var(--shadow);
     }
 
     .callout strong {
       color: var(--text);
+      font-weight: 600;
     }
 
     #agenda ol {
-      padding-left: 1.25rem;
+      padding-left: 1.5rem;
       margin-top: 0.5rem;
+      list-style: decimal;
     }
 
     #agenda li {
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.7rem;
+      line-height: 1.6;
     }
 
     #key-takeaways ul {
-      padding-left: 1.25rem;
+      padding-left: 1.5rem;
       margin-top: 0.5rem;
+      list-style: none;
     }
 
     #key-takeaways li {
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.7rem;
+      line-height: 1.6;
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    #key-takeaways li::before {
+      content: "▪";
+      color: var(--accent);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    blockquote {
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--primary);
+      letter-spacing: 0.01em;
+      line-height: 1.8;
+      padding: 1.5rem 0 1.5rem 1.5rem;
+      border-left: 4px solid var(--accent);
+      margin: 1.5rem 0;
+    }
+
+    blockquote + p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-style: normal;
+      margin-top: -0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #comments .placeholder {
+      background: var(--accent-light);
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    #comments code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--primary);
     }
 
     footer#footer {
-      background: var(--primary);
+      background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #aaa;
       text-align: center;
-      padding: 1.25rem;
-      font-size: 0.85rem;
+      padding: 2rem 1.5rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      font-weight: 500;
     }
 
     @media (max-width: 480px) {
       header#hero {
-        padding: 2rem 1rem;
+        padding: 3rem 1rem;
       }
 
       header#hero h1 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
+        letter-spacing: 0;
+      }
+
+      main {
+        padding: 2rem 1rem;
+      }
+
+      section {
+        margin-bottom: 2.25rem;
+        padding-bottom: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.9rem;
+      }
+
+      #authors {
+        margin-bottom: 1.75rem;
+      }
+
+      #agenda ol,
+      #key-takeaways ul {
+        padding-left: 1.25rem;
+      }
+
+      #key-takeaways li {
+        padding-left: 1rem;
+      }
+
+      .callout {
+        padding: 1rem 1rem;
+        font-size: 0.95rem;
+      }
+
+      blockquote {
+        padding: 1.25rem 0 1.25rem 1rem;
+        font-size: 1.05rem;
+      }
+
+      footer#footer {
+        padding: 1.5rem 1rem;
       }
     }
   </style>
@@ -131,14 +256,14 @@
 <body>
 
   <header id="hero">
-    <h1 class="placeholder">Replace this with your blog post title</h1>
+    <h1>DSI AwayDay 2026 &mdash; An Honest Recap</h1>
   </header>
 
   <main>
 
     <section id="authors">
-      <h2>Authors</h2>
-      <p class="placeholder">Replace with your team members' names.</p>
+      <h2>✍️ Authors</h2>
+      <p>✍️ By JO &amp; RB</p>
     </section>
 
     <div class="callout">
@@ -147,39 +272,39 @@
     </div>
 
     <section id="agenda">
-      <h2>Away Day Agenda</h2>
-      <ol class="placeholder">
-        <li>09:00 &mdash; Welcome &amp; introductions</li>
-        <li>10:00 &mdash; Morning sessions (replace with actual agenda)</li>
-        <li>12:30 &mdash; Lunch break</li>
-        <li>14:00 &mdash; Afternoon workshops</li>
-        <li>16:30 &mdash; Show &amp; tell / wrap-up</li>
+      <h2>📅 Away Day Agenda</h2>
+      <ol>
+        <li>Graham's talk (30 minutes)</li>
+        <li>Blog workshop session (2 hours)</li>
+        <li>Lunch</li>
+        <li>Scavenger hunt</li>
       </ol>
     </section>
 
     <section id="what-we-worked-on">
-      <h2>What We Worked On</h2>
-      <p class="placeholder">Replace this with a description of what your team explored or built during the AwayDay
-        &mdash; the problem, your approach, and what you discovered.</p>
+      <h2>🛠️ What We Worked On</h2>
+      <p>Our team spent the workshop block exploring this &mdash; building the very
+        blog post you're reading, with Claude Code as a collaborator. The meta-experience
+        of using an AI agent to write about an event while still sitting in the event
+        was, frankly, more interesting than most of the event itself.</p>
     </section>
 
     <section id="key-takeaways">
-      <h2>Key Takeaways</h2>
-      <ul class="placeholder">
-        <li>Sovereign AI and what it means for DSI</li>
-        <li>How knowledge graphs can power smarter search</li>
-        <li>Replace with your own key takeaway</li>
+      <h2>💡 Key Takeaways</h2>
+      <ul>
+        <li>GPL completion is due by Sunday.</li>
+        <li>50% of call centre staff to be removed 😞</li>
       </ul>
     </section>
 
     <section id="quote-of-the-day">
-      <h2>Quote of the Day</h2>
-      <p class="placeholder">Replace this with a memorable quote from the AwayDay, who said it, and why it stuck with
-        your team.</p>
+      <h2>💬 Quote of the Day</h2>
+      <blockquote>&ldquo;Nothing memorable happened.&rdquo;</blockquote>
+      <p>&mdash; the team, summarising the day.</p>
     </section>
 
     <section id="comments">
-      <h2>Comments</h2>
+      <h2>💭 Comments</h2>
       <p class="placeholder">Add a comment form here. Persist comments to <code>localStorage</code> under the key
         <code>awayday_blog_comments</code>. Each record needs a name, comment text, and timestamp. Render newest first.
       </p>
@@ -188,7 +313,7 @@
   </main>
 
   <footer id="footer">
-    <p>Published: <span id="publish-date">2026-05-27</span> &middot; DSI AwayDay Blog</p>
+    <p>Published: <span id="publish-date">2026-05-28</span> &middot; DSI AwayDay Blog</p>
   </footer>
 
 </body>
