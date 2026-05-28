@@ -347,6 +347,35 @@
       line-height: 1.55;
     }
 
+    /* ── AI prototyping highlight ────────────────────────── */
+    .prototyping-highlight {
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 10px;
+    }
+
+    .prototyping-highlight p {
+      font-size: 0.88rem;
+      color: #c4b5fd;
+      margin: 0;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .shoutout {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(234,88,12,0.15));
+      border: 1px solid rgba(167,139,250,0.3);
+      border-radius: 6px;
+      padding: 0.15rem 0.6rem;
+      font-weight: 600;
+      color: #e9d5ff;
+    }
+
     /* ── Pull quote ───────────────────────────────────────── */
     .pull-quote {
       border-left: none;
@@ -638,6 +667,16 @@
           </blockquote>
         </section>
 
+        <section id="ai-prototyping" class="glass-card">
+          <h2>The Beauty of AI Prototyping</h2>
+          <p>A special thank you to <span class="shoutout">🧠 Lohith</span> for putting together the hands-on prototyping session as part of the interactive activities today. What could have been a passive demo became something everyone could get their hands on — and that made all the difference.</p>
+          <p>The session captured something important: AI doesn't just accelerate existing workflows, it fundamentally changes what's worth attempting. Ideas that once required weeks of design, development, and iteration can now be explored, tested, and shared in an afternoon. The barrier between imagination and reality has never been lower.</p>
+          <p>This blog is a live example. The entire thing — layout, glassmorphism styling, animations, the comments widget, the confetti — was built through conversation with an AI assistant. No design files opened, no code written by hand, no CSS painstakingly crafted from scratch. Just ideas, expressed in plain language, turned into something real.</p>
+          <div class="prototyping-highlight">
+            <p>🚀 That's the promise of AI prototyping: the bottleneck shifts from execution to ideas. And ideas are exactly what DS&amp;I has in abundance.</p>
+          </div>
+        </section>
+
         <section id="comments" class="glass-card">
           <h2>Join the Conversation</h2>
           <form id="comment-form" class="comment-form" novalidate>
@@ -776,21 +815,30 @@
 
       function rand(lo, hi) { return lo + Math.random() * (hi - lo); }
 
-      for (var i = 0; i < 180; i++) {
-        pieces.push({
-          x: rand(0, canvas.width),
-          y: rand(-canvas.height, 0),
-          w: rand(8, 16),
-          h: rand(5, 10),
-          color: COLORS[i % COLORS.length],
-          vx: rand(-3, 3),
-          vy: rand(2, 6),
-          g: rand(0.1, 0.2),
-          angle: rand(0, Math.PI * 2),
-          spin: rand(-0.12, 0.12),
-          alpha: 1
-        });
+      function spawnBatch(count) {
+        for (var i = 0; i < count; i++) {
+          var isBrain = Math.random() < 0.22;
+          pieces.push({
+            x: rand(0, canvas.width),
+            y: rand(-canvas.height * 0.5, 0),
+            w: rand(8, 16),
+            h: rand(5, 10),
+            brain: isBrain,
+            size: rand(16, 26),
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            vx: rand(-2.5, 2.5),
+            vy: rand(1.5, 4),
+            g: rand(0.04, 0.1),
+            angle: rand(0, Math.PI * 2),
+            spin: isBrain ? rand(-0.03, 0.03) : rand(-0.12, 0.12),
+            alpha: 1
+          });
+        }
       }
+
+      spawnBatch(160);
+      setTimeout(function () { spawnBatch(90); }, 1800);
+      setTimeout(function () { spawnBatch(70); }, 3500);
 
       function loop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -803,13 +851,18 @@
           p.x += p.vx;
           p.y += p.vy;
           p.angle += p.spin;
-          if (p.y > canvas.height * 0.7) p.alpha -= 0.018;
+          if (p.y > canvas.height * 0.85) p.alpha -= 0.008;
           ctx.save();
           ctx.globalAlpha = Math.max(0, p.alpha);
           ctx.translate(p.x, p.y);
-          ctx.rotate(p.angle);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          if (p.brain) {
+            ctx.font = p.size + 'px serif';
+            ctx.fillText('🧠', -p.size / 2, p.size / 2);
+          } else {
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          }
           ctx.restore();
         }
         if (alive) requestAnimationFrame(loop);
