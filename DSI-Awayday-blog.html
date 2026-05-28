@@ -743,13 +743,7 @@
         tick();
       }
 
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { fire(); observer.disconnect(); }
-        });
-      }, { threshold: 0.3 });
-
-      observer.observe(document.getElementById('key-takeaways'));
+      fire();
     })();
   </script>
 
