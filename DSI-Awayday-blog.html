@@ -45,6 +45,18 @@
       min-height: 100vh;
     }
 
+    /* ── Scroll progress bar ─────────────────────────────── */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #7c3aed, #db2777, #ea580c);
+      z-index: 10000;
+      transition: width 0.08s linear;
+    }
+
     /* ── Ambient orbs ─────────────────────────────────────── */
     .orb {
       position: fixed;
@@ -59,6 +71,7 @@
       left: -15%;
       background: radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%);
       filter: blur(60px);
+      animation: orbPulse 9s ease-in-out infinite;
     }
     .orb--2 {
       width: 500px;
@@ -67,6 +80,7 @@
       right: -10%;
       background: radial-gradient(circle, rgba(234,88,12,0.3), transparent 70%);
       filter: blur(80px);
+      animation: orbPulse 12s ease-in-out infinite 2s;
     }
     .orb--3 {
       width: 400px;
@@ -75,6 +89,12 @@
       left: 20%;
       background: radial-gradient(circle, rgba(219,39,119,0.25), transparent 70%);
       filter: blur(70px);
+      animation: orbPulse 10s ease-in-out infinite 4s;
+    }
+
+    @keyframes orbPulse {
+      0%, 100% { transform: scale(1);    opacity: 0.8; }
+      50%       { transform: scale(1.18); opacity: 1;   }
     }
 
     /* ── Page wrapper ─────────────────────────────────────── */
@@ -147,8 +167,6 @@
 
     .glass-card:hover {
       background: var(--glass-bg-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(124,58,237,0.2);
     }
 
     /* ── Content wrapper ──────────────────────────────────── */
@@ -251,30 +269,82 @@
       padding-top: 0.05rem;
     }
 
-    /* ── Key takeaways ────────────────────────────────────── */
-    #key-takeaways ul {
-      list-style: none;
-      padding-left: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-top: 0.5rem;
+    /* ── Card reveal on scroll ────────────────────────────── */
+    .glass-card[data-reveal="pending"] {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    .glass-card[data-reveal="visible"] {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-card[data-reveal="visible"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.2);
     }
 
-    #key-takeaways li {
+    /* ── Key takeaways ────────────────────────────────────── */
+    .takeaway-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .takeaway-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 1.5rem 1.25rem;
       display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      line-height: 1.5;
-      font-size: 0.95rem;
+      flex-direction: column;
+      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .takeaway-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--glow-purple), var(--glow-orange));
+    }
+
+    .takeaway-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(124,58,237,0.25);
+    }
+
+    .takeaway-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: rgba(167,139,250,0.18);
+      line-height: 1;
     }
 
     .takeaway-icon {
       color: #a78bfa;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .takeaway-headline {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .takeaway-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.55;
     }
 
     /* ── Pull quote ───────────────────────────────────────── */
@@ -485,6 +555,8 @@
 
 <body>
 
+  <div id="scroll-progress"></div>
+
   <div class="orb orb--1"></div>
   <div class="orb orb--2"></div>
   <div class="orb orb--3"></div>
@@ -530,26 +602,32 @@
           <h2>Down the Rabbit Hole</h2>
           <p>The day opened with a welcome talk from Graham that set the tone perfectly — ambitious, honest, and genuinely exciting about where DS&amp;I is heading. It was the kind of opener that makes you glad you showed up.</p>
           <p>The morning's centrepiece was an interactive showcase of team projects. <strong>Sovereign AI</strong> made the case that owning your AI stack is a strategic advantage, not just a compliance checkbox — the demo was genuinely jaw-dropping. <strong>Knowledge Graphs</strong> showed how connecting data intelligently can unlock a level of search and reasoning that embeddings alone can't match. Each project was a reminder of the depth of talent sitting across DS&amp;I.</p>
-          <p>The <strong>DS&amp;I Engage session</strong> brought everyone into the conversation — a rare chance to hear from colleagues across the full breadth of the division and to think collectively about the direction we're heading. Candid, energising, and long overdue.</p>
+          <p>The <strong>DS&amp;I Engage and Thrive sessions</strong> brought everyone into the conversation — a rare chance to hear from colleagues across the full breadth of the division and to think collectively about the direction we're heading. Candid, energising, and long overdue.</p>
           <p>After a well-earned lunch, the closing talks wrapped up the themes of the day with a forward-looking lens. Then came the scavenger hunt — competitive, chaotic, and exactly what you want after a day of big thinking. No further comment on who won.</p>
         </section>
 
         <section id="key-takeaways" class="glass-card">
           <h2>What We're Taking Home</h2>
-          <ul>
-            <li>
+          <div class="takeaway-grid">
+            <div class="takeaway-card">
+              <span class="takeaway-num">01</span>
               <svg class="takeaway-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              AI is amazing
-            </li>
-            <li>
+              <p class="takeaway-headline">AI is amazing</p>
+              <p class="takeaway-desc">From sovereign deployments to multi-agent workflows, today's demos made it undeniable. We are living in the moment.</p>
+            </div>
+            <div class="takeaway-card">
+              <span class="takeaway-num">02</span>
               <svg class="takeaway-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              DS&amp;I is the best team in the bank
-            </li>
-            <li>
+              <p class="takeaway-headline">DS&amp;I is the best team in the bank</p>
+              <p class="takeaway-desc">The talent, the ambition, the sheer energy in the room today. Nowhere else you'd rather be building the future.</p>
+            </div>
+            <div class="takeaway-card">
+              <span class="takeaway-num">03</span>
               <svg class="takeaway-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              Let AI do your job
-            </li>
-          </ul>
+              <p class="takeaway-headline">Let AI do your job</p>
+              <p class="takeaway-desc">Not all of it — just the repetitive, soul-crushing bits. Reclaim your time for the work that actually matters.</p>
+            </div>
+          </div>
         </section>
 
         <section id="quote-of-the-day" class="glass-card">
@@ -658,6 +736,26 @@
     });
 
     renderComments();
+
+    // ── Scroll progress bar ───────────────────────────────────
+    var progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', function () {
+      var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      progressBar.style.width = Math.min(pct, 100) + '%';
+    });
+
+    // ── Card reveal on scroll ─────────────────────────────────
+    var cards = document.querySelectorAll('.glass-card');
+    cards.forEach(function (c) { c.dataset.reveal = 'pending'; });
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.dataset.reveal = 'visible';
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    cards.forEach(function (c) { revealObs.observe(c); });
 
     // ── Confetti ─────────────────────────────────────────────
     (function () {
