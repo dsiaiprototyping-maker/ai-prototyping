@@ -119,6 +119,11 @@ https://htmlpreview.github.io/?https://raw.githubusercontent.com/<owner>/<repo>/
   htmlpreview URL for that file with `<branch>` = the session's **current**
   branch (`git rev-parse --abbrev-ref HEAD`).
 
+**IMPORTANT: Output URLs as bare text only — no markdown formatting, no bold, no backticks.**
+When sharing a htmlpreview URL with the user, output it as a plain line with no
+surrounding markdown. Users will copy the URL directly, and markdown formatting
+(like `**url**`) breaks the link.
+
 ## Stack
 
 - Pure HTML, CSS, and vanilla JavaScript only. No npm, no frameworks, no
