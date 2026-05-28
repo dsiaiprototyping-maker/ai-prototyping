@@ -494,7 +494,7 @@
     <header id="hero">
       <h1>Where Ideas Met the Horizon</h1>
       <p class="hero-subtitle">DSI AwayDay &middot; A day of thinking, building, and wondering aloud</p>
-      <a href="#authors" class="hero-scroll"><i data-lucide="chevron-down"></i></a>
+      <a href="#authors" class="hero-scroll"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
     </header>
 
     <main>
@@ -538,15 +538,15 @@
           <h2>What We're Taking Home</h2>
           <ul>
             <li>
-              <i data-lucide="check-circle" class="takeaway-icon"></i>
+              <svg class="takeaway-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               AI is amazing
             </li>
             <li>
-              <i data-lucide="check-circle" class="takeaway-icon"></i>
+              <svg class="takeaway-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               DS&amp;I is the best team in the bank
             </li>
             <li>
-              <i data-lucide="check-circle" class="takeaway-icon"></i>
+              <svg class="takeaway-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               Let AI do your job
             </li>
           </ul>
@@ -572,7 +572,7 @@
               <textarea id="comment-text" name="text" rows="4" placeholder="What did you think of the day?" required></textarea>
             </div>
             <button type="submit" class="btn-submit">
-              <i data-lucide="send"></i> Post Comment
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> Post Comment
             </button>
           </form>
           <div id="comments-list" class="comments-list" aria-live="polite"></div>
@@ -587,7 +587,6 @@
 
   </div>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     var STORAGE_KEY = 'awayday_blog_comments';
 
@@ -659,7 +658,6 @@
     });
 
     renderComments();
-    lucide.createIcons();
 
     // ── Confetti ─────────────────────────────────────────────
     (function () {
