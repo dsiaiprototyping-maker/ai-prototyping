@@ -4,7 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DSI AwayDay — Team Blog</title>
+  <title>DSI AwayDay 2026 — Team Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary: #1a1a2e;
@@ -13,6 +16,11 @@
       --text: #333333;
       --muted: #666666;
       --border: #dddddd;
+      --card-bg: #ffffff;
+      --hero-grad-start: #1a1a2e;
+      --hero-grad-end: #16213e;
+      --tag-bg: rgba(233, 69, 96, 0.1);
+      --progress-h: 4px;
     }
 
     * {
@@ -21,40 +29,156 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    .placeholder {
-      color: var(--muted);
-      font-style: italic;
+    /* ── Progress bar ── */
+    #reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: var(--progress-h);
+      width: 0%;
+      background: var(--accent);
+      z-index: 1000;
+      transition: width 0.1s linear;
     }
 
+    /* ── Nav ── */
+    nav#top-nav {
+      position: sticky;
+      top: var(--progress-h);
+      background: rgba(26, 26, 46, 0.96);
+      backdrop-filter: blur(8px);
+      z-index: 900;
+      padding: 0 1.5rem;
+    }
+
+    nav#top-nav ul {
+      display: flex;
+      list-style: none;
+      max-width: 900px;
+      margin: 0 auto;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav#top-nav ul::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav#top-nav ul li a {
+      display: block;
+      padding: 0.85rem 1rem;
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    nav#top-nav ul li a:hover,
+    nav#top-nav ul li a.active {
+      color: var(--accent);
+    }
+
+    /* ── Hero ── */
     header#hero {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--hero-grad-start) 0%, var(--hero-grad-end) 60%, #0f3460 100%);
       color: white;
-      padding: 3rem 1.5rem;
+      padding: 5rem 1.5rem 4rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header#hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(233, 69, 96, 0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    #hero-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      border: 1px solid rgba(233, 69, 96, 0.4);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
     }
 
     header#hero h1 {
-      font-size: 2.25rem;
-      margin-bottom: 0.5rem;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
+    #hero-subtitle {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto 1.75rem;
+    }
+
+    #hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      flex-wrap: wrap;
+    }
+
+    #hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* ── Main layout ── */
     main {
-      max-width: 760px;
+      max-width: 780px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 1.5rem 3rem;
     }
 
     section {
-      margin-bottom: 2.5rem;
-      padding-bottom: 1.75rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
       border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     section:last-of-type {
@@ -62,67 +186,382 @@
     }
 
     h2 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.1rem;
       color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    h2 .section-icon {
+      color: var(--accent);
+      font-size: 1.1rem;
     }
 
     p {
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.85rem;
     }
 
-    #authors p {
-      color: var(--muted);
-      font-size: 0.95rem;
+    /* ── Authors ── */
+    #authors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
     }
 
-    .callout {
-      background: white;
-      border-left: 4px solid var(--accent);
-      border-radius: 4px;
+    .author-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .author-chip::before {
+      content: "●";
+      color: var(--accent);
+      font-size: 0.5rem;
+    }
+
+    /* ── Agenda ── */
+    .agenda-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--card-bg);
+      border-radius: 8px;
       padding: 0.85rem 1rem;
-      margin-bottom: 2.5rem;
-      color: var(--muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .agenda-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(233, 69, 96, 0.1);
+    }
+
+    .agenda-item.done .agenda-time {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .agenda-item.done .agenda-label {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .agenda-item.done .agenda-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .agenda-time {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 3.5rem;
+      padding-top: 0.05rem;
+    }
+
+    .agenda-label {
+      flex: 1;
       font-size: 0.95rem;
     }
 
-    .callout strong {
+    .agenda-check {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    /* ── What we worked on ── */
+    .worked-on-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .worked-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.1rem 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .worked-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .worked-card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .worked-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .worked-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    /* ── Key takeaways ── */
+    .takeaways-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .takeaways-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .takeaway-num {
+      background: var(--accent);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 999px;
+      min-width: 1.3rem;
+      height: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* ── Quote ── */
+    #quote-of-the-day blockquote {
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #quote-of-the-day blockquote::before {
+      content: "\201C";
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 7rem;
+      color: rgba(233, 69, 96, 0.25);
+      position: absolute;
+      top: -1.5rem;
+      left: 0.75rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    #quote-of-the-day blockquote p {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    #quote-of-the-day blockquote cite {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.55);
+      font-style: normal;
+    }
+
+    /* ── Comments ── */
+    #comments-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #comments-list li {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+    }
+
+    #comments-list li .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    #comments-list li .meta span.name {
+      color: var(--primary);
+    }
+
+    #comments-list li .body {
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+
+    #comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    #comment-form input,
+    #comment-form textarea {
+      font-family: inherit;
+      font-size: 0.93rem;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
       color: var(--text);
+      width: 100%;
+      transition: border-color 0.2s;
     }
 
-    #agenda ol {
-      padding-left: 1.25rem;
-      margin-top: 0.5rem;
+    #comment-form input:focus,
+    #comment-form textarea:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
-    #agenda li {
-      margin-bottom: 0.4rem;
+    #comment-form textarea {
+      resize: vertical;
+      min-height: 90px;
     }
 
-    #key-takeaways ul {
-      padding-left: 1.25rem;
-      margin-top: 0.5rem;
+    #comment-form button {
+      align-self: flex-end;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.5rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
     }
 
-    #key-takeaways li {
-      margin-bottom: 0.4rem;
+    #comment-form button:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
     }
 
+    #comment-form button:active {
+      transform: translateY(0);
+    }
+
+    .comments-empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 1.5rem 0;
+    }
+
+    /* ── Footer ── */
     footer#footer {
       background: var(--primary);
-      color: #aaa;
+      color: rgba(255, 255, 255, 0.45);
       text-align: center;
-      padding: 1.25rem;
-      font-size: 0.85rem;
+      padding: 1.5rem 1rem;
+      font-size: 0.83rem;
     }
 
+    footer#footer strong {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* ── Back to top ── */
+    #back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+      transition: transform 0.2s;
+      z-index: 800;
+    }
+
+    #back-to-top.show {
+      display: flex;
+    }
+
+    #back-to-top:hover {
+      transform: scale(1.1);
+    }
+
+    /* ── Responsive ── */
     @media (max-width: 480px) {
       header#hero {
-        padding: 2rem 1rem;
+        padding: 3.5rem 1rem 2.5rem;
       }
 
-      header#hero h1 {
-        font-size: 1.6rem;
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      nav#top-nav ul li a {
+        padding: 0.75rem 0.65rem;
+        font-size: 0.72rem;
       }
     }
   </style>
@@ -130,66 +569,274 @@
 
 <body>
 
+  <div id="reading-progress"></div>
+
+  <nav id="top-nav">
+    <ul>
+      <li><a href="#hero">Top</a></li>
+      <li><a href="#authors">Authors</a></li>
+      <li><a href="#agenda">Agenda</a></li>
+      <li><a href="#what-we-worked-on">Work</a></li>
+      <li><a href="#key-takeaways">Takeaways</a></li>
+      <li><a href="#quote-of-the-day">Quote</a></li>
+      <li><a href="#comments">Comments</a></li>
+    </ul>
+  </nav>
+
   <header id="hero">
-    <h1 class="placeholder">Replace this with your blog post title</h1>
+    <div id="hero-tag">DSI May Away Day 2026</div>
+    <h1>A Day of Ideas, Collaboration &amp; Discovery</h1>
+    <p id="hero-subtitle">Reflections from the DSI AwayDay — what we explored, what we built, and what we'll carry forward.</p>
+    <div id="hero-meta">
+      <span>&#128197; 28 May 2026</span>
+      <span>&#128203; 5 min read</span>
+      <span>&#128100; DSI Team</span>
+    </div>
   </header>
 
   <main>
 
     <section id="authors">
-      <h2>Authors</h2>
-      <p class="placeholder">Replace with your team members' names.</p>
+      <h2><span class="section-icon">&#9998;</span> Authors</h2>
+      <div id="authors-list">
+        <span class="author-chip">Milangu</span>
+        <span class="author-chip">Victor</span>
+        <span class="author-chip">Lucy</span>
+      </div>
     </section>
 
-    <div class="callout">
-      <strong>UI challenge:</strong> This page is intentionally bare. Your challenge: make it look like a real blog
-      post. Improve the typography, layout, colours, spacing &mdash; whatever you think it needs.
-    </div>
-
     <section id="agenda">
-      <h2>Away Day Agenda</h2>
-      <ol class="placeholder">
-        <li>09:00 &mdash; Welcome &amp; introductions</li>
-        <li>10:00 &mdash; Morning sessions (replace with actual agenda)</li>
-        <li>12:30 &mdash; Lunch break</li>
-        <li>14:00 &mdash; Afternoon workshops</li>
-        <li>16:30 &mdash; Show &amp; tell / wrap-up</li>
+      <h2><span class="section-icon">&#128336;</span> Away Day Agenda</h2>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem;">Click items to mark them complete.</p>
+      <ol class="agenda-list">
+        <li class="agenda-item" data-idx="0">
+          <span class="agenda-time">09:00</span>
+          <span class="agenda-label">Welcome &amp; introductions</span>
+          <span class="agenda-check"></span>
+        </li>
+        <li class="agenda-item" data-idx="1">
+          <span class="agenda-time">10:00</span>
+          <span class="agenda-label">Morning sessions</span>
+          <span class="agenda-check"></span>
+        </li>
+        <li class="agenda-item" data-idx="2">
+          <span class="agenda-time">12:30</span>
+          <span class="agenda-label">Lunch break</span>
+          <span class="agenda-check"></span>
+        </li>
+        <li class="agenda-item" data-idx="3">
+          <span class="agenda-time">14:00</span>
+          <span class="agenda-label">Afternoon workshops</span>
+          <span class="agenda-check"></span>
+        </li>
+        <li class="agenda-item" data-idx="4">
+          <span class="agenda-time">16:30</span>
+          <span class="agenda-label">Show &amp; tell / wrap-up</span>
+          <span class="agenda-check"></span>
+        </li>
       </ol>
     </section>
 
     <section id="what-we-worked-on">
-      <h2>What We Worked On</h2>
-      <p class="placeholder">Replace this with a description of what your team explored or built during the AwayDay
-        &mdash; the problem, your approach, and what you discovered.</p>
+      <h2><span class="section-icon">&#128161;</span> What We Worked On</h2>
+      <p>During the AwayDay our team explored how AI can transform the way DSI works — diving deep into hands-on prototyping and collaborative experimentation.</p>
+      <div class="worked-on-grid">
+        <div class="worked-card">
+          <div class="worked-card-icon">&#129302;</div>
+          <h3>AI Prototyping</h3>
+          <p>Building and testing AI-powered workflows using Claude as a real-time collaborator.</p>
+        </div>
+        <div class="worked-card">
+          <div class="worked-card-icon">&#128200;</div>
+          <h3>Data Insights</h3>
+          <p>Exploring how knowledge graphs and smarter search can surface hidden connections in DSI data.</p>
+        </div>
+        <div class="worked-card">
+          <div class="worked-card-icon">&#129309;</div>
+          <h3>Team Collaboration</h3>
+          <p>Sharing approaches across teams and identifying patterns for sovereign AI at DSI.</p>
+        </div>
+      </div>
     </section>
 
     <section id="key-takeaways">
-      <h2>Key Takeaways</h2>
-      <ul class="placeholder">
-        <li>Sovereign AI and what it means for DSI</li>
-        <li>How knowledge graphs can power smarter search</li>
-        <li>Replace with your own key takeaway</li>
+      <h2><span class="section-icon">&#127775;</span> Key Takeaways</h2>
+      <ul class="takeaways-list">
+        <li>
+          <span class="takeaway-num">1</span>
+          <span>Sovereign AI is a real and immediate concern for DSI — ownership of models and data matters.</span>
+        </li>
+        <li>
+          <span class="takeaway-num">2</span>
+          <span>Knowledge graphs can power dramatically smarter search and discovery across complex datasets.</span>
+        </li>
+        <li>
+          <span class="takeaway-num">3</span>
+          <span>AI as a collaborator, not just a tool — the AwayDay showed how much faster teams move when AI is in the loop.</span>
+        </li>
+        <li>
+          <span class="takeaway-num">4</span>
+          <span>Replace this with your own key insight from the day.</span>
+        </li>
       </ul>
     </section>
 
     <section id="quote-of-the-day">
-      <h2>Quote of the Day</h2>
-      <p class="placeholder">Replace this with a memorable quote from the AwayDay, who said it, and why it stuck with
-        your team.</p>
+      <h2><span class="section-icon">&#128172;</span> Quote of the Day</h2>
+      <blockquote>
+        <p class="placeholder">Replace this with a memorable quote from the AwayDay.</p>
+        <cite class="placeholder">— Replace with speaker name</cite>
+      </blockquote>
     </section>
 
     <section id="comments">
-      <h2>Comments</h2>
-      <p class="placeholder">Add a comment form here. Persist comments to <code>localStorage</code> under the key
-        <code>awayday_blog_comments</code>. Each record needs a name, comment text, and timestamp. Render newest first.
-      </p>
+      <h2><span class="section-icon">&#128172;</span> Comments</h2>
+      <ul id="comments-list"></ul>
+      <form id="comment-form" novalidate>
+        <div class="form-row">
+          <input id="comment-name" type="text" placeholder="Your name" autocomplete="name" />
+          <input id="comment-role" type="text" placeholder="Your role (optional)" />
+        </div>
+        <textarea id="comment-text" placeholder="Leave a comment…"></textarea>
+        <button type="submit">Post comment</button>
+      </form>
     </section>
 
   </main>
 
   <footer id="footer">
-    <p>Published: <span id="publish-date">2026-05-27</span> &middot; DSI AwayDay Blog</p>
+    <p><strong>DSI AwayDay 2026</strong> &nbsp;&middot;&nbsp; Published: <span id="publish-date">28 May 2026</span> &nbsp;&middot;&nbsp; Built with Claude</p>
   </footer>
+
+  <button id="back-to-top" title="Back to top" aria-label="Back to top">&#8679;</button>
+
+  <script>
+    /* ── Reading progress ── */
+    (function () {
+      var bar = document.getElementById('reading-progress');
+      function update() {
+        var scrolled = window.scrollY;
+        var total = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (total > 0 ? Math.min(100, (scrolled / total) * 100) : 0) + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+    })();
+
+    /* ── Back to top ── */
+    (function () {
+      var btn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('show', window.scrollY > 400);
+      }, { passive: true });
+      btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+
+    /* ── Active nav highlight ── */
+    (function () {
+      var links = document.querySelectorAll('nav#top-nav a');
+      var sections = Array.from(links).map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      });
+      function onScroll() {
+        var pos = window.scrollY + 80;
+        var active = sections.reduce(function (best, s, i) {
+          return s && s.offsetTop <= pos ? i : best;
+        }, 0);
+        links.forEach(function (l, i) { l.classList.toggle('active', i === active); });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    /* ── Scroll-reveal sections ── */
+    (function () {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('section').forEach(function (s) { obs.observe(s); });
+    })();
+
+    /* ── Agenda tick-off ── */
+    (function () {
+      var KEY = 'awayday_agenda_done';
+      var done = {};
+      try { done = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { done = {}; }
+      function save() { localStorage.setItem(KEY, JSON.stringify(done)); }
+      document.querySelectorAll('.agenda-item').forEach(function (el) {
+        var idx = el.dataset.idx;
+        if (done[idx]) { el.classList.add('done'); el.querySelector('.agenda-check').textContent = '✓'; }
+        el.addEventListener('click', function () {
+          el.classList.toggle('done');
+          var checked = el.classList.contains('done');
+          el.querySelector('.agenda-check').textContent = checked ? '✓' : '';
+          done[idx] = checked;
+          save();
+        });
+      });
+    })();
+
+    /* ── Comments ── */
+    (function () {
+      var STORAGE_KEY = 'awayday_blog_comments';
+      var form = document.getElementById('comment-form');
+      var nameInput = document.getElementById('comment-name');
+      var roleInput = document.getElementById('comment-role');
+      var textInput = document.getElementById('comment-text');
+      var list = document.getElementById('comments-list');
+
+      function load() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; }
+      }
+      function save(comments) { localStorage.setItem(STORAGE_KEY, JSON.stringify(comments)); }
+
+      function render(comments) {
+        list.innerHTML = '';
+        if (comments.length === 0) {
+          list.innerHTML = '<li class="comments-empty">No comments yet — be the first!</li>';
+          return;
+        }
+        comments.slice().reverse().forEach(function (c) {
+          var li = document.createElement('li');
+          var meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.innerHTML = '<span class="name">' + escHtml(c.name) + '</span>' +
+            (c.role ? ' &middot; ' + escHtml(c.role) : '') +
+            ' &middot; ' + escHtml(c.time);
+          var body = document.createElement('div');
+          body.className = 'body';
+          body.textContent = c.text;
+          li.appendChild(meta);
+          li.appendChild(body);
+          list.appendChild(li);
+        });
+      }
+
+      function escHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = nameInput.value.trim();
+        var role = roleInput.value.trim();
+        var text = textInput.value.trim();
+        if (!name || !text) return;
+        var comments = load();
+        comments.push({ name: name, role: role, text: text, time: new Date().toLocaleString() });
+        save(comments);
+        nameInput.value = '';
+        roleInput.value = '';
+        textInput.value = '';
+        render(comments);
+      });
+
+      render(load());
+    })();
+  </script>
 
 </body>
 
