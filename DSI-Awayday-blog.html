@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DSI AwayDay — Team Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #1a1a2e;
@@ -14,6 +15,9 @@
       --muted: #666666;
       --border: #dddddd;
       --banner-bg: #f5c400;
+      --card-bg: #ffffff;
+      --radius: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.07);
     }
 
     * {
@@ -23,10 +27,10 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     .placeholder {
@@ -34,96 +38,227 @@
       font-style: italic;
     }
 
+    /* ── Hero ── */
     header#hero {
       background: var(--banner-bg);
       color: var(--primary);
-      padding: 3rem 1.5rem;
+      padding: 5rem 2rem 4.5rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header#hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(26,26,46,0.15) 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      pointer-events: none;
+    }
+
+    header#hero .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header#hero .hero-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--banner-bg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
     }
 
     header#hero h1 {
-      font-size: 2.25rem;
-      margin-bottom: 0.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 5vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
     }
 
+    /* ── Main layout ── */
     main {
       max-width: 760px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 1.5rem;
     }
 
     section {
-      margin-bottom: 2.5rem;
-      padding-bottom: 1.75rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    section:last-of-type {
-      border-bottom: none;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(0,0,0,0.04);
     }
 
     h2 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-      color: var(--primary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
     }
 
     p {
       margin-bottom: 0.75rem;
     }
 
-    #authors p {
-      color: var(--muted);
-      font-size: 0.95rem;
+    p:last-child {
+      margin-bottom: 0;
     }
 
+    /* ── Authors ── */
+    #authors p {
+      display: inline-block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--primary);
+      background: rgba(245,196,0,0.18);
+      border: 1.5px solid rgba(245,196,0,0.55);
+      padding: 0.25rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 0;
+    }
+
+    /* ── Callout ── */
     .callout {
-      background: white;
-      border-left: 4px solid var(--accent);
-      border-radius: 4px;
-      padding: 0.85rem 1rem;
-      margin-bottom: 2.5rem;
+      background: var(--card-bg);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
     }
 
     .callout strong {
-      color: var(--text);
+      color: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
     }
 
+    /* ── Agenda timeline ── */
     #agenda ol {
-      padding-left: 1.25rem;
-      margin-top: 0.5rem;
+      list-style: none;
+      padding: 0;
+      margin-top: 0.25rem;
     }
 
     #agenda li {
-      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.93rem;
     }
 
+    #agenda li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    #agenda li::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      background: var(--banner-bg);
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      margin-top: 0.45rem;
+    }
+
+    /* ── Key Takeaways ── */
     #key-takeaways ul {
-      padding-left: 1.25rem;
-      margin-top: 0.5rem;
+      list-style: none;
+      padding: 0;
+      margin-top: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
     #key-takeaways li {
-      margin-bottom: 0.4rem;
+      font-size: 0.93rem;
+      padding: 0.6rem 0.85rem;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
     }
 
+    #key-takeaways li::before {
+      content: '→';
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* ── Quote ── */
+    #quote-of-the-day blockquote {
+      position: relative;
+      padding-left: 2.25rem;
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--primary);
+    }
+
+    #quote-of-the-day blockquote::before {
+      content: '\201C';
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 5rem;
+      line-height: 0.8;
+      color: var(--banner-bg);
+      position: absolute;
+      left: -0.2rem;
+      top: 0.1rem;
+      font-style: normal;
+    }
+
+    /* ── Footer ── */
     footer#footer {
       background: var(--primary);
-      color: #aaa;
+      color: #666;
       text-align: center;
-      padding: 1.25rem;
-      font-size: 0.85rem;
+      padding: 1.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
     }
 
+    footer#footer #publish-date {
+      color: var(--banner-bg);
+    }
+
+    /* ── Responsive ── */
     @media (max-width: 480px) {
       header#hero {
-        padding: 2rem 1rem;
+        padding: 3.5rem 1.25rem 3rem;
       }
 
-      header#hero h1 {
-        font-size: 1.6rem;
+      section {
+        padding: 1.25rem 1.5rem;
       }
     }
   </style>
@@ -132,7 +267,10 @@
 <body>
 
   <header id="hero">
-    <h1 class="placeholder">Replace this with your blog post title</h1>
+    <div class="hero-inner">
+      <div class="hero-tag">DSI AwayDay 2026</div>
+      <h1 class="placeholder">Replace this with your blog post title</h1>
+    </div>
   </header>
 
   <main>
